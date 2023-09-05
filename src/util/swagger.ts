@@ -8,9 +8,9 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
  */
 export function setupSwagger(app: INestApplication): void {
     const options = new DocumentBuilder()
-        .setTitle('NestJS Study API Docs')
-        .setDescription('NestJS Study API description')
-        .setVersion('1.0.0')
+        .setTitle('PIT A PET')
+        .setDescription('Capstone Design(PIT A PET) API DOCS')
+        .setVersion('1.0.1')
         .build();
 
     const document = SwaggerModule.createDocument(app, options);
