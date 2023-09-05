@@ -14,11 +14,11 @@ export class IdleController {
     @Post()
     @ApiOperation({ summary: 'Idle posting' })
     async create(@Body() settings: any): Promise<void> {
-        let s = 2;
+        let s = 1;
 
         while (s <= 31) {
-            const bgnde = `bgnde=202308${s.toString().padStart(2, '0')}&`;
-            const endde = `endde=202308${s.toString().padStart(2, '0')}&`;
+            const bgnde = `bgnde=202309${s.toString().padStart(2, '0')}&`;
+            const endde = `endde=202309${s.toString().padStart(2, '0')}&`;
             console.log(bgnde, endde);
             s++;
 
@@ -50,6 +50,7 @@ export class IdleController {
     @ApiQuery({ name: 'endDate', description: 'YYYY-MM-DD', required: true, type: Date })
     @ApiQuery({ name: 'region', required: false, type: String })
     @ApiQuery({ name: 'isUnderProtection', description: 'Y or N', required: false, type: String })
+    @ApiQuery({ name: 'type', description: '개, 고양이, 기타', required: false, type: String })
     async getData(
         @Query('page') page: number = 1,
         @Query('pageSize') pageSize: number = 20,
