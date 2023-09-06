@@ -58,7 +58,7 @@ export class IdleRepository extends Repository<Idle> {
         }
     }
 
-    async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<any[]> {
+    async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<any> {
         const where: any = {};
 
         where.happenDt = Between(startDate, endDate);
@@ -82,8 +82,12 @@ export class IdleRepository extends Repository<Idle> {
             where: where,
             order: { happenDt: 'desc' },
         });
+        const idles = {
+            data: idle,
+            pageCount: Math.ceil(idlePageCnt / pageSize),
+        };
 
-        return [idle, Math.ceil(idlePageCnt / pageSize)];
+        return idles;
     }
 
     // async get(
