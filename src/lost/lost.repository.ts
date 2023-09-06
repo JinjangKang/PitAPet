@@ -1,64 +1,42 @@
 import { CustomRepository } from 'src/typeorm-ex.decorator';
-import { Idle } from './Idle.entity';
-import { Between, ILike, Repository } from 'typeorm';
 
-@CustomRepository(Idle)
-export class IdleRepository extends Repository<Idle> {
-    async insertIdle(idleData: any[]): Promise<void> {
-        for (let data of idleData) {
-            const {
-                desertionNo,
-                filename,
-                happenDt,
-                happenPlace,
-                kindCd,
-                colorCd,
-                age,
-                weight,
-                noticeNo,
-                noticeSdt,
-                noticeEdt,
-                popfile,
-                processState,
-                sexCd,
-                neuterYn,
-                specialMark,
-                careNm,
-                careTel,
-                careAddr,
-                orgNm,
-                chargeNm,
-                officetel,
-            } = data;
+import { Between, ILike, Like, Repository } from 'typeorm';
 
-            await this.save({
-                desertionNo,
-                filename,
-                happenDt,
-                happenPlace,
-                kindCd,
-                colorCd,
-                age,
-                weight,
-                noticeNo,
-                noticeSdt,
-                noticeEdt,
-                popfile,
-                processState,
-                sexCd,
-                neuterYn,
-                specialMark,
-                careNm,
-                careTel,
-                careAddr,
-                orgNm,
-                chargeNm,
-                officetel,
-            });
-        }
+import { NotFoundException } from '@nestjs/common';
+
+import { dataSource } from 'src/server';
+import { lost } from './lost.entity';
+import { CreatelostDto } from './dto/create_lost.dto';
+
+@CustomRepository(lost)
+export class lostRepository extends Repository<lost> {
+    async insertlost(lostData: CreatelostDto): Promise<void> {
+        let lostNo: string;
+        let date = new Date();
+        let createdDate = date.getFullYear() + (date.getMonth() + 1) + date.getDate();
+
+        const lastRowNo = await this.find({
+            order: { lostNo: 'DESC' },
+        });
+        if (lastRowNo) lostNo = 'L' + (Number(lastRowNo.slice(-6)) + 1).toString().padStart(6, '0');
+        else lostNo = 'L000001';
+        const { lostPlace, lostDate, title, description, image, tel, reward, type } = lostData;
+
+        await this.insert({
+            lostNo,
+            lostPlace,
+            lostDate,
+            title,
+            description,
+            image,
+            tel,
+            reward,
+            type,
+            createdDate,
+        });
     }
 
-    async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<any[]> {
+    async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<lost[]> {
         const where: any = {};
 
         where.happenDt = Between(startDate, endDate);
@@ -72,18 +50,13 @@ export class IdleRepository extends Repository<Idle> {
             where.processState = ILike(`%종료%`);
         }
 
-        let idle: Idle[] = await this.find({
+        let lost: lost[] = await this.find({
             take: pageSize,
             skip: offset,
             where: where,
-            order: { happenDt: 'desc' },
-        });
-        let idlePageCnt = await this.count({
-            where: where,
-            order: { happenDt: 'desc' },
         });
 
-        return [idle, Math.ceil(idlePageCnt / pageSize)];
+        return lost;
     }
 
     // async get(
@@ -133,14 +106,14 @@ export class IdleRepository extends Repository<Idle> {
 
     //     where.updateDate = Between(new Date(aYear, aMonth - 1, aDate), new Date(bYear, bMonth - 1, bDate));
 
-    //     const Idle = await this.find({
+    //     const lost = await this.find({
     //         where,
     //     });
 
-    //     if (!Idle) {
+    //     if (!lost) {
     //         throw new NotFoundException('Approval을 찾을 수 없습니다.');
     //     }
 
-    //     return Idle;
+    //     return lost;
     // }
 }
