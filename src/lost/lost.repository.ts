@@ -1,13 +1,7 @@
 import { CustomRepository } from 'src/typeorm-ex.decorator';
-
-import { Between, ILike, Like, Repository } from 'typeorm';
-
-import { NotFoundException } from '@nestjs/common';
-
-import { dataSource } from 'src/server';
+import { Between, ILike, Repository } from 'typeorm';
 import { Lost } from './lost.entity';
 import { CreatelostDto } from './dto/create_lost.dto';
-import { promises } from 'dns';
 
 @CustomRepository(Lost)
 export class lostRepository extends Repository<Lost> {
@@ -41,27 +35,21 @@ export class lostRepository extends Repository<Lost> {
         return await this.find();
     }
 
-    async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<Lost[]> {
-        const where: any = {};
-
-        where.happenDt = Between(startDate, endDate);
-
-        where.careAddr = ILike(`%${region}%`);
-        if (type) where.kindCd = ILike(`%${type}%`);
-
-        if (isUnderProtection == 'Y') {
-            where.processState = ILike(`%보호%`);
-        } else if (isUnderProtection == 'N') {
-            where.processState = ILike(`%종료%`);
-        }
-
+    async getData(pageSize, offset): Promise<any> {
         let lost: Lost[] = await this.find({
             take: pageSize,
             skip: offset,
-            where: where,
         });
+        let lostPageCnt = await this.count({
+            take: pageSize,
+            skip: offset,
+        });
+        const losts = {
+            data: lost,
+            pageCount: Math.ceil(lostPageCnt / pageSize),
+        };
 
-        return lost;
+        return losts;
     }
 
     // async get(
