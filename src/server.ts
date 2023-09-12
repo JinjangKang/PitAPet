@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { Idle } from './idle/Idle.entity';
+import { Lost } from './lost/lost.entity';
 
 export const dataSource = new DataSource({
     type: 'mariadb', //Database 설정
@@ -8,7 +9,7 @@ export const dataSource = new DataSource({
     username: 'jinkang',
     password: '0408',
     database: 'pitapet',
-    entities: [Idle],
+    entities: [Idle, Lost],
 });
 
 dataSource.initialize();

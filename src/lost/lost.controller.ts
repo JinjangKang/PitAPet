@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 
 import axios from 'axios';
 import { lostService } from './lost.service';
-import { lost } from './lost.entity';
+import { Lost } from './lost.entity';
 import { CreatelostDto } from './dto/create_lost.dto';
 
 @Controller('lost')
@@ -20,6 +20,11 @@ export class lostController {
     }
 
     @Get('data')
+    async getall() {
+        return await this.lostService.getall();
+    }
+
+    // @Get('data')
     @ApiOperation({ summary: '아이들 데이터 가져오기, page => 페이지 번호, pageSize => 페이지 당 표시할 데이터 수' })
     @ApiQuery({ name: 'page', required: false, type: Number })
     @ApiQuery({ name: 'pageSize', required: false, type: Number })
@@ -31,7 +36,7 @@ export class lostController {
         @Query('region') region: string = '서울',
         @Query('isUnderProtection') isUnderProtection: 'Y' | 'N' = 'Y',
         @Query('type') type: string,
-    ): Promise<lost[]> {
+    ): Promise<Lost[]> {
         const offset = (page - 1) * pageSize;
         return await this.lostService.getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type);
     }

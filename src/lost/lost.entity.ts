@@ -1,15 +1,14 @@
 import { BaseEntity, Column, Entity, DeleteDateColumn } from 'typeorm';
 
-@Entity('lost', { schema: 'pitapet' })
-export class lost extends BaseEntity {
+@Entity('LOST', { schema: 'pitapet' })
+export class Lost extends BaseEntity {
     @Column('varchar', {
         primary: true,
-        name: 'desertionNo',
+        name: 'lostNo',
         length: 100,
     })
-    desertionNo: string;
+    lostNo: string;
 
-    @Column('varchar') lostNo: string;
     @Column('varchar') lostPlace: string;
     @Column('varchar') lostDate: Date;
     @Column('varchar') title: string;

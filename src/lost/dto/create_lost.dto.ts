@@ -2,8 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatelostDto {
-    @ApiProperty({ description: 'lostNo' })
-    lostNo: string;
     @ApiProperty({ description: 'lostPlace' })
     lostPlace: string;
     @ApiProperty({ description: 'lostDate' })
@@ -20,6 +18,4 @@ export class CreatelostDto {
     reward: string;
     @ApiProperty({ description: 'type' })
     type: string;
-    @ApiProperty({ description: 'createdDate' })
-    createdDate: Date;
 }

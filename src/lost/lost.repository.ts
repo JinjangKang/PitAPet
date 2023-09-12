@@ -5,15 +5,16 @@ import { Between, ILike, Like, Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 
 import { dataSource } from 'src/server';
-import { lost } from './lost.entity';
+import { Lost } from './lost.entity';
 import { CreatelostDto } from './dto/create_lost.dto';
+import { promises } from 'dns';
 
-@CustomRepository(lost)
-export class lostRepository extends Repository<lost> {
+@CustomRepository(Lost)
+export class lostRepository extends Repository<Lost> {
     async insertlost(lostData: CreatelostDto): Promise<void> {
         let lostNo: string;
         let date = new Date();
-        let createdDate = date.getFullYear() + (date.getMonth() + 1) + date.getDate();
+        let createdDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
         const lastRowNo = await this.find({
             order: { lostNo: 'DESC' },
@@ -36,7 +37,11 @@ export class lostRepository extends Repository<lost> {
         });
     }
 
-    async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<lost[]> {
+    async getall() {
+        return await this.find();
+    }
+
+    async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<Lost[]> {
         const where: any = {};
 
         where.happenDt = Between(startDate, endDate);
@@ -50,7 +55,7 @@ export class lostRepository extends Repository<lost> {
             where.processState = ILike(`%종료%`);
         }
 
-        let lost: lost[] = await this.find({
+        let lost: Lost[] = await this.find({
             take: pageSize,
             skip: offset,
             where: where,

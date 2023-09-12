@@ -10,6 +10,10 @@ export class lostService {
         return this.lostRepository.insertlost(lostData);
     }
 
+    async getall() {
+        return await this.lostRepository.getall();
+    }
+
     async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<any[]> {
         return await this.lostRepository.getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type);
     }
