@@ -18,4 +18,6 @@ export class CreatelostDto {
     reward: string;
     @ApiProperty({ description: 'type' })
     type: string;
+    @ApiProperty({ description: 'sexCd' })
+    sexCd: string;
 }

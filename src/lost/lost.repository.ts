@@ -17,7 +17,7 @@ export class lostRepository extends Repository<Lost> {
 
         if (lastRow) lostNo = 'L' + (Number(lastRowNo.slice(-6)) + 1).toString().padStart(6, '0');
         else lostNo = 'L000001';
-        const { lostPlace, lostDate, title, description, image, tel, reward, type } = lostData;
+        const { lostPlace, lostDate, title, description, image, tel, reward, type, sexCd } = lostData;
 
         await this.insert({
             lostNo,
@@ -29,6 +29,7 @@ export class lostRepository extends Repository<Lost> {
             tel,
             reward,
             type,
+            sexCd,
             createdDate,
         });
     }

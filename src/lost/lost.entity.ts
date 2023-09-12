@@ -17,5 +17,6 @@ export class Lost extends BaseEntity {
     @Column('varchar') tel: string;
     @Column('varchar') reward: string;
     @Column('varchar') type: string;
+    @Column('varchar') sexCd: string;
     @Column('varchar') createdDate: Date;
 }
