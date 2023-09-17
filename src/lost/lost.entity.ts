@@ -11,6 +11,7 @@ export class Lost extends BaseEntity {
 
     @Column('varchar') type: string;
     @Column('varchar') sexCd: string;
+    @Column('varchar') neuterYn: string;
     @Column('varchar') age: number;
     @Column('varchar') weight: number;
     @Column('varchar') furColor: string;

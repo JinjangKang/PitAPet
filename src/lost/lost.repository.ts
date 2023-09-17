@@ -17,13 +17,28 @@ export class lostRepository extends Repository<Lost> {
 
         if (lastRow) lostNo = 'L' + (Number(lastRowNo.slice(-6)) + 1).toString().padStart(6, '0');
         else lostNo = 'L000001';
-        const { type, sexCd, age, weight, furColor, feature, image, lostPlace, lostDate, tel, reward, title, detail } =
-            lostData;
+        const {
+            type,
+            sexCd,
+            neuterYn,
+            age,
+            weight,
+            furColor,
+            feature,
+            image,
+            lostPlace,
+            lostDate,
+            tel,
+            reward,
+            title,
+            detail,
+        } = lostData;
 
         await this.insert({
             lostNo,
             type,
             sexCd,
+            neuterYn,
             age,
             weight,
             furColor,

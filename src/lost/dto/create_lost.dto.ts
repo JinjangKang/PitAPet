@@ -8,6 +8,8 @@ export class CreatelostDto {
     type: string;
     @ApiProperty({ description: 'sexCd' })
     sexCd: string;
+    @ApiProperty({ description: 'neuterYn' })
+    neuterYn: string;
     @ApiProperty({ description: 'age' })
     age: number;
     @ApiProperty({ description: 'weight' })
