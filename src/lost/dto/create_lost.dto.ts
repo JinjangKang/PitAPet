@@ -11,9 +11,9 @@ export class CreatelostDto {
     @ApiProperty({ description: 'neuterYn' })
     neuterYn: string;
     @ApiProperty({ description: 'age' })
-    age: number;
+    age: string;
     @ApiProperty({ description: 'weight' })
-    weight: number;
+    weight: string;
     @ApiProperty({ description: 'furColor' })
     furColor: string;
     @ApiProperty({ description: 'feature' })
