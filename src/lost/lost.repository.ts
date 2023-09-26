@@ -1,5 +1,5 @@
 import { CustomRepository } from 'src/typeorm-ex.decorator';
-import { Between, ILike, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Lost } from './lost.entity';
 import { CreatelostDto } from './dto/create_lost.dto';
 
@@ -13,10 +13,12 @@ export class lostRepository extends Repository<Lost> {
         const lastRow = await this.find({
             order: { lostNo: 'DESC' },
         });
-        let lastRowNo = lastRow[0].lostNo;
+        console.log(lastRow);
 
-        if (lastRow) lostNo = 'L' + (Number(lastRowNo.slice(-6)) + 1).toString().padStart(6, '0');
-        else lostNo = 'L000001';
+        if (lastRow.length !== 0) {
+            let lastRowNo = lastRow[0].lostNo;
+            lostNo = 'L' + (Number(lastRowNo.slice(-6)) + 1).toString().padStart(6, '0');
+        } else lostNo = 'L000001';
         const {
             type,
             sexCd,
@@ -25,7 +27,6 @@ export class lostRepository extends Repository<Lost> {
             weight,
             furColor,
             feature,
-            image,
             lostPlace,
             lostDate,
             tel,
@@ -43,7 +44,6 @@ export class lostRepository extends Repository<Lost> {
             weight,
             furColor,
             feature,
-            image,
             lostPlace,
             lostDate,
             tel,

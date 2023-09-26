@@ -3,12 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeORMConfig } from './config/typeorm.config';
 import { IdleModule } from './idle/Idle.module';
 import { lostModule } from './lost/lost.module';
+import { lostImageModule } from './lost/_lostImage/lostImage.module';
 
 @Module({
     imports: [
         TypeOrmModule.forRoot(typeORMConfig), // TypeORM 설정 파일 연결
         IdleModule,
         lostModule,
+        lostImageModule,
     ],
     controllers: [],
     providers: [],

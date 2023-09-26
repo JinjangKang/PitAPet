@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
-
-import axios from 'axios';
 import { lostService } from './lost.service';
 import { Lost } from './lost.entity';
 import { CreatelostDto } from './dto/create_lost.dto';

@@ -18,8 +18,6 @@ export class CreatelostDto {
     furColor: string;
     @ApiProperty({ description: 'feature' })
     feature: string;
-    @ApiProperty({ description: 'image' })
-    image: string;
     @ApiProperty({ description: 'lostPlace' })
     lostPlace: string;
     @ApiProperty({ description: 'lostDate', example: '2023-09-17' })
@@ -32,4 +30,6 @@ export class CreatelostDto {
     title: string;
     @ApiProperty({ description: 'detail' })
     detail: string;
+    @ApiProperty({ description: 'image' })
+    image: Array<Blob>;
 }

@@ -16,15 +16,11 @@ export class Lost extends BaseEntity {
     @Column('varchar') weight: number;
     @Column('varchar') furColor: string;
     @Column('varchar') feature: string;
-    @Column('varchar') image: string;
-
     @Column('varchar') lostPlace: string;
     @Column('varchar') lostDate: Date;
     @Column('varchar') tel: string;
     @Column('varchar') reward: string;
-
     @Column('varchar') title: string;
     @Column('varchar') detail: string;
-
     @Column('varchar') createdDate: Date;
 }

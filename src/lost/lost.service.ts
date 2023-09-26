@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { lostRepository } from './lost.repository';
 import { CreatelostDto } from './dto/create_lost.dto';
+import { lostImageRepository } from './_lostImage/lostImage.repository';
 
 @Injectable()
 export class lostService {
-    constructor(private lostRepository: lostRepository) {}
+    constructor(private lostRepository: lostRepository, private lostImageRepository: lostImageRepository) {}
 
     async insert(lostData: CreatelostDto): Promise<any> {
-        return this.lostRepository.insertlost(lostData);
+        const lostImage = lostData.image;
+        await this.lostRepository.insertlost(lostData);
+        return await this.lostImageRepository.insertlostImage(lostImage);
     }
 
     async getall() {
