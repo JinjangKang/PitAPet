@@ -26,7 +26,7 @@ export class lostController {
     @ApiOperation({ summary: '아이들 데이터 가져오기, page => 페이지 번호, pageSize => 페이지 당 표시할 데이터 수' })
     @ApiQuery({ name: 'page', required: false, type: Number })
     @ApiQuery({ name: 'pageSize', required: false, type: Number })
-    async getData(@Query('page') page: number = 1, @Query('pageSize') pageSize: number = 20): Promise<Lost[]> {
+    async getData(@Query('page') page: number = 1, @Query('pageSize') pageSize: number = 10): Promise<Lost[]> {
         const offset = (page - 1) * pageSize;
         return await this.lostService.getData(pageSize, offset);
     }

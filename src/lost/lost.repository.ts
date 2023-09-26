@@ -2,6 +2,8 @@ import { CustomRepository } from 'src/typeorm-ex.decorator';
 import { Repository } from 'typeorm';
 import { Lost } from './lost.entity';
 import { CreatelostDto } from './dto/create_lost.dto';
+import { LostImage } from './_lostImage/lostImage.entity';
+import { dataSource } from 'src/server';
 
 @CustomRepository(Lost)
 export class lostRepository extends Repository<Lost> {
@@ -13,7 +15,6 @@ export class lostRepository extends Repository<Lost> {
         const lastRow = await this.find({
             order: { lostNo: 'DESC' },
         });
-        console.log(lastRow);
 
         if (lastRow.length !== 0) {
             let lastRowNo = lastRow[0].lostNo;
@@ -59,10 +60,17 @@ export class lostRepository extends Repository<Lost> {
     }
 
     async getData(pageSize, offset): Promise<any> {
-        let lost: Lost[] = await this.find({
+        let lost: any[] = await this.find({
             take: pageSize,
             skip: offset,
         });
+
+        for (let e of lost) {
+            e.images = await dataSource.getRepository(LostImage).findOne({
+                where: { lostNo: e.lostNo },
+            });
+        }
+
         let lostPageCnt = await this.count({
             take: pageSize,
             skip: offset,
