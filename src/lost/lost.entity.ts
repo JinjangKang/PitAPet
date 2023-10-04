@@ -23,5 +23,4 @@ export class Lost extends BaseEntity {
     @Column('varchar') title: string;
     @Column('varchar') detail: string;
     @Column('varchar') createdDate: Date;
-    images: any;
 }

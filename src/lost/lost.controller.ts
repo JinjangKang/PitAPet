@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, UseInterceptors, UploadedFiles, UploadedFile, Bind } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { lostService } from './lost.service';
 import { Lost } from './lost.entity';
+import { FilesInterceptor } from '@nestjs/platform-express/multer';
 import { CreatelostDto } from './dto/create_lost.dto';
 
 @Controller('lost')
@@ -13,8 +14,12 @@ export class lostController {
 
     @Post()
     @ApiOperation({ summary: 'lost posting' })
-    async create(@Body() lostData: CreatelostDto): Promise<void> {
-        return await this.lostService.insert(lostData);
+    @UseInterceptors(FilesInterceptor('image'))
+    async create(@Body() postData: CreatelostDto, @UploadedFiles() images: Express.Multer.File[]): Promise<void> {
+        // console.log(postData);
+        // console.log(images);
+
+        return await this.lostService.insert(postData, images);
     }
 
     // @Get('data')

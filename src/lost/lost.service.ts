@@ -7,10 +7,9 @@ import { lostImageRepository } from './_lostImage/lostImage.repository';
 export class lostService {
     constructor(private lostRepository: lostRepository, private lostImageRepository: lostImageRepository) {}
 
-    async insert(lostData: CreatelostDto): Promise<any> {
-        const lostImage = lostData.image;
+    async insert(lostData: CreatelostDto, images): Promise<any> {
         await this.lostRepository.insertlost(lostData);
-        return await this.lostImageRepository.insertlostImage(lostImage);
+        return await this.lostImageRepository.insertlostImage(images);
     }
 
     async getall() {

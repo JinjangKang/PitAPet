@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatelostDto {
     @ApiProperty({ description: 'lostNo' })
@@ -31,5 +30,5 @@ export class CreatelostDto {
     @ApiProperty({ description: 'detail' })
     detail: string;
     @ApiProperty({ description: 'image' })
-    image: Array<Blob>;
+    image: FormData;
 }
