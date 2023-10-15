@@ -75,6 +75,7 @@ export class lostRepository extends Repository<Lost> {
             take: pageSize,
             skip: offset,
         });
+
         const losts = {
             data: lost,
             pageCount: Math.ceil(lostPageCnt / pageSize),

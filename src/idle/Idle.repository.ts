@@ -1,61 +1,117 @@
 import { CustomRepository } from 'src/typeorm-ex.decorator';
 import { Idle } from './Idle.entity';
-import { Between, ILike, Repository } from 'typeorm';
+import { Between, ILike, Index, Repository } from 'typeorm';
+import axios from 'axios';
+import { formatDate } from 'util/util';
+import { dataSource } from 'src/server';
 
 @CustomRepository(Idle)
 export class IdleRepository extends Repository<Idle> {
-    async insertIdle(idleData: any[]): Promise<void> {
-        for (let data of idleData) {
-            const {
-                desertionNo,
-                filename,
-                happenDt,
-                happenPlace,
-                kindCd,
-                colorCd,
-                age,
-                weight,
-                noticeNo,
-                noticeSdt,
-                noticeEdt,
-                popfile,
-                processState,
-                sexCd,
-                neuterYn,
-                specialMark,
-                careNm,
-                careTel,
-                careAddr,
-                orgNm,
-                chargeNm,
-                officetel,
-            } = data;
+    async insertIdle(): Promise<void> {
+        // POST 요청을 보낼 데이터
+        const apiUrl = 'https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?';
+        const pageNo = 'pageNo=1&';
+        const numOfRows = 'numOfRows=1000&';
+        const type = '_type=json&';
+        const serviceKey =
+            'serviceKey=Z2WBxekxGTIDegURqOBPHpoD8m6Dr6ojNR8Ridn6G9kUfku1afB2TOLmRsWB%2BMOukK%2FVCLKhxBnq9pWFSNy5kQ%3D%3D';
 
-            await this.save({
-                desertionNo,
-                filename,
-                happenDt,
-                happenPlace,
-                kindCd,
-                colorCd,
-                age,
-                weight,
-                noticeNo,
-                noticeSdt,
-                noticeEdt,
-                popfile,
-                processState,
-                sexCd,
-                neuterYn,
-                specialMark,
-                careNm,
-                careTel,
-                careAddr,
-                orgNm,
-                chargeNm,
-                officetel,
-            });
+        let startDateRow = await dataSource
+            .getRepository(Idle)
+            .createQueryBuilder('IDLE')
+            .select('IDLE.happenDt')
+            .orderBy('IDLE.happenDt', 'DESC')
+            .getOne();
+        let postDataDate = new Date(formatDate(startDateRow.happenDt)['yyyy.mm.dd']);
+
+        let today = new Date(formatDate(new Date())['yyyy.mm.dd']);
+        let dateDiff = (today.getTime() - postDataDate.getTime()) / (1000 * 60 * 60 * 24);
+        console.log(dateDiff);
+
+        for (let i = 0; i < dateDiff; i++) {
+            postDataDate.setDate(postDataDate.getDate() + 1);
+            let formattedDate =
+                postDataDate.getFullYear().toString() +
+                (postDataDate.getMonth() + 1).toString().padStart(2, '0') +
+                postDataDate.getDate().toString().padStart(2, '0');
+
+            console.log(`${formattedDate}의 데이터 포스팅을 시작합니다.`);
+
+            const bgnde = `bgnde=${formattedDate}&`;
+            const endde = `endde=${formattedDate}&`;
+
+            try {
+                const response = await axios.get(apiUrl + bgnde + endde + pageNo + numOfRows + type + serviceKey);
+                const idleData = response.data.response.body.items.item;
+                console.log('GET 요청 성공');
+                for (let j = 0; j < idleData.length; j++) {
+                    console.log(`${formatDate(postDataDate)['yyyy.mm.dd']}`);
+                    console.log(``);
+                    console.log(`${j}/${idleData.length}행 포스팅 중 . . .`);
+                    console.log(`${((j / idleData.length) * 100).toFixed(2)}% / 100%`);
+                    console.log(`---------------------------------------------------`);
+
+                    await this.dataSave(idleData[j]);
+                }
+            } catch (error) {
+                console.error('GET 요청 실패:', error);
+                console.error(`${today}`);
+            }
+            console.log(`${formattedDate}의 데이터 포스팅을 완료했습니다.`);
+            console.log(`----------------------------------------`);
         }
+    }
+
+    async dataSave(data) {
+        const {
+            desertionNo,
+            filename,
+            happenDt,
+            happenPlace,
+            kindCd,
+            colorCd,
+            age,
+            weight,
+            noticeNo,
+            noticeSdt,
+            noticeEdt,
+            popfile,
+            processState,
+            sexCd,
+            neuterYn,
+            specialMark,
+            careNm,
+            careTel,
+            careAddr,
+            orgNm,
+            chargeNm,
+            officetel,
+        } = data;
+
+        await this.save({
+            desertionNo,
+            filename,
+            happenDt,
+            happenPlace,
+            kindCd,
+            colorCd,
+            age,
+            weight,
+            noticeNo,
+            noticeSdt,
+            noticeEdt,
+            popfile,
+            processState,
+            sexCd,
+            neuterYn,
+            specialMark,
+            careNm,
+            careTel,
+            careAddr,
+            orgNm,
+            chargeNm,
+            officetel,
+        });
     }
 
     async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<any> {

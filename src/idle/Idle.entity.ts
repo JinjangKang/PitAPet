@@ -10,7 +10,7 @@ export class Idle extends BaseEntity {
     desertionNo: string;
 
     @Column('varchar') filename: string;
-    @Column('varchar') happenDt: string;
+    @Column('varchar') happenDt: Date;
     @Column('varchar') happenPlace: string;
     @Column('varchar') kindCd: string;
     @Column('varchar') colorCd: string;

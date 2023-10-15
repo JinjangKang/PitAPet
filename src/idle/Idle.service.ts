@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CreateIdleDto } from './dto/create_Idle.dto';
-import { UpdateIdleDto } from './dto/update_Idle.dto';
 import { IdleRepository } from './Idle.repository';
-import { Idle } from './Idle.entity';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class IdleService {
     constructor(private IdleRepository: IdleRepository) {}
 
-    async insert(idleData: any[]): Promise<any> {
-        return this.IdleRepository.insertIdle(idleData);
+    @Cron(CronExpression.EVERY_HOUR)
+    async insert(): Promise<any> {
+        return this.IdleRepository.insertIdle();
     }
 
     async getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type): Promise<any[]> {

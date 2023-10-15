@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { IdleService } from './Idle.service';
 import { Idle } from './Idle.entity';
-import axios from 'axios';
 
 @Controller('Idle')
 @ApiTags('Idle API')
@@ -14,32 +13,7 @@ export class IdleController {
     @Post()
     @ApiOperation({ summary: 'Idle posting' })
     async create(@Body() settings: any): Promise<void> {
-        let s = 1;
-
-        while (s <= 31) {
-            const bgnde = `bgnde=202309${s.toString().padStart(2, '0')}&`;
-            const endde = `endde=202309${s.toString().padStart(2, '0')}&`;
-            console.log(bgnde, endde);
-            s++;
-
-            // POST 요청을 보낼 데이터
-            const apiUrl = 'https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?';
-            // const bgnde = 'bgnde=20211201&';
-            // const endde = 'endde=20211231&';
-            const pageNo = 'pageNo=1&';
-            const numOfRows = 'numOfRows=1000&';
-            const type = '_type=json&';
-            const serviceKey =
-                'serviceKey=Z2WBxekxGTIDegURqOBPHpoD8m6Dr6ojNR8Ridn6G9kUfku1afB2TOLmRsWB%2BMOukK%2FVCLKhxBnq9pWFSNy5kQ%3D%3D';
-            try {
-                const response = await axios.get(apiUrl + bgnde + endde + pageNo + numOfRows + type + serviceKey);
-                const idleData = response.data.response.body.items.item;
-                console.log('GET 요청 성공');
-                await this.IdleService.insert(idleData);
-            } catch (error) {
-                console.error('GET 요청 실패:', error);
-            }
-        }
+        await this.IdleService.insert();
     }
 
     @Get('data')
