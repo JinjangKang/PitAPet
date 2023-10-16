@@ -16,6 +16,7 @@ export class IdleRepository extends Repository<Idle> {
         const serviceKey =
             'serviceKey=Z2WBxekxGTIDegURqOBPHpoD8m6Dr6ojNR8Ridn6G9kUfku1afB2TOLmRsWB%2BMOukK%2FVCLKhxBnq9pWFSNy5kQ%3D%3D';
 
+        // 자동 포스팅 시
         let startDateRow = await dataSource
             .getRepository(Idle)
             .createQueryBuilder('IDLE')
@@ -23,13 +24,17 @@ export class IdleRepository extends Repository<Idle> {
             .orderBy('IDLE.happenDt', 'DESC')
             .getOne();
         let postDataDate = new Date(formatDate(startDateRow.happenDt)['yyyy.mm.dd']);
-
         let today = new Date(formatDate(new Date())['yyyy.mm.dd']);
         let dateDiff = (today.getTime() - postDataDate.getTime()) / (1000 * 60 * 60 * 24);
         console.log(dateDiff);
 
-        for (let i = 0; i < dateDiff; i++) {
-            postDataDate.setDate(postDataDate.getDate() + 1);
+        //수동 소급 포스팅 시
+        // let postDataDate = new Date('2023.08.01');
+        // let today = new Date(formatDate(new Date())['yyyy.mm.dd']);
+        // let dateDiff = (today.getTime() - postDataDate.getTime()) / (1000 * 60 * 60 * 24);
+        // console.log(dateDiff);
+
+        for (let i = 0; i <= dateDiff; i++) {
             let formattedDate =
                 postDataDate.getFullYear().toString() +
                 (postDataDate.getMonth() + 1).toString().padStart(2, '0') +
@@ -41,24 +46,46 @@ export class IdleRepository extends Repository<Idle> {
             const endde = `endde=${formattedDate}&`;
 
             try {
-                const response = await axios.get(apiUrl + bgnde + endde + pageNo + numOfRows + type + serviceKey);
+                const fullAPIUrl = apiUrl + bgnde + endde + pageNo + numOfRows + type + serviceKey;
+                const response = await axios.get(fullAPIUrl);
                 const idleData = response.data.response.body.items.item;
                 console.log('GET 요청 성공');
-                for (let j = 0; j < idleData.length; j++) {
-                    console.log(`${formatDate(postDataDate)['yyyy.mm.dd']}`);
-                    console.log(``);
-                    console.log(`${j}/${idleData.length}행 포스팅 중 . . .`);
-                    console.log(`${((j / idleData.length) * 100).toFixed(2)}% / 100%`);
-                    console.log(`---------------------------------------------------`);
 
-                    await this.dataSave(idleData[j]);
+                let apiDataCount = idleData.length;
+                let dbFileCount = await this.count({ where: { happenDt: postDataDate } });
+
+                if (apiDataCount !== dbFileCount) {
+                    for (let j = 0; j < idleData.length; j++) {
+                        console.log(`${formatDate(postDataDate)['yyyy.mm.dd']}`);
+                        console.log(`API = ${apiDataCount}, DataBase = ${dbFileCount}`);
+                        console.log(``);
+                        console.log(``);
+                        console.log(``);
+                        console.log(``);
+                        console.log(``);
+                        console.log(``);
+                        console.log(`${j}/${idleData.length}행 포스팅 중 . . .`);
+                        console.log(`${((j / idleData.length) * 100).toFixed(2)}% / 100%`);
+                        console.log(`---------------------------------------------------`);
+
+                        await this.dataSave(idleData[j]);
+                    }
+                } else {
+                    console.log(``);
+                    console.log(``);
+                    console.log(`${formatDate(postDataDate)['yyyy.mm.dd']}의 데이터는 모두 저장되어 있습니다.`);
+                    console.log(``);
+                    console.log(``);
+                    console.log(``);
                 }
             } catch (error) {
                 console.error('GET 요청 실패:', error);
                 console.error(`${today}`);
             }
             console.log(`${formattedDate}의 데이터 포스팅을 완료했습니다.`);
-            console.log(`----------------------------------------`);
+            console.log(`---------------------------------------------------`);
+
+            postDataDate.setDate(postDataDate.getDate() + 1);
         }
     }
 

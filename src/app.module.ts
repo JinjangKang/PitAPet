@@ -4,6 +4,7 @@ import { typeORMConfig } from './config/typeorm.config';
 import { IdleModule } from './idle/Idle.module';
 import { lostModule } from './lost/lost.module';
 import { lostImageModule } from './lost/_lostImage/lostImage.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -11,6 +12,7 @@ import { lostImageModule } from './lost/_lostImage/lostImage.module';
         IdleModule,
         lostModule,
         lostImageModule,
+        AuthModule,
     ],
     controllers: [],
     providers: [],
