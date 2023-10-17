@@ -20,6 +20,10 @@ export class lostService {
         return await this.lostRepository.getData(pageSize, offset);
     }
 
+    async getDetail(lostNo): Promise<any> {
+        return await this.lostRepository.getDetail(lostNo);
+    }
+
     // async get(
     //     asCode: string,
     //     endUser: string,

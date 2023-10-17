@@ -36,17 +36,10 @@ export class lostController {
         return await this.lostService.getData(pageSize, offset);
     }
 
-    // @Get()
-    // @ApiOperation({ summary: 'amCode와 일치하는 Sale GET Query ver' })
-    // async getQuery(
-    //     @Query('amCode') amCode: string,
-    //     @Query('endUser') endUser: string,
-    //     @Query('client') client: string,
-    //     @Query('updateUser') updateUser: string,
-    //     @Query('aState') aState: string,
-    //     @Query('afterDate') afterDate: string,
-    //     @Query('beforeDate') beforeDate: string,
-    // ): Promise<any[]> {
-    //     return await this.lostService.get(amCode, endUser, client, updateUser, aState, afterDate, beforeDate);
-    // }
+    @Get('detail')
+    @ApiOperation({ summary: '디테일 가져오기' })
+    @ApiQuery({ name: 'lostNo', required: true })
+    async getDetail(@Query('lostNo') lostNo: string): Promise<Lost> {
+        return await this.lostService.getDetail(lostNo);
+    }
 }

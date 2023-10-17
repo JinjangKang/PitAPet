@@ -84,6 +84,10 @@ export class lostRepository extends Repository<Lost> {
         return losts;
     }
 
+    async getDetail(lostNo): Promise<any> {
+        return await this.findOne({ where: { lostNo: lostNo } });
+    }
+
     // async get(
     //     amCode: string,
     //     endUser: string,
