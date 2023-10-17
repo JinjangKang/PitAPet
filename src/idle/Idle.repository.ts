@@ -181,61 +181,9 @@ export class IdleRepository extends Repository<Idle> {
         return idles;
     }
 
-    // async get(
-    //     amCode: string,
-    //     endUser: string,
-    //     client: string,
-    //     updateUser: string,
-    //     aState: string,
-    //     afterDate: string,
-    //     beforeDate: string,
-    // ): Promise<any[]> {
-    //     let aYear = 2000;
-    //     let aMonth = 1;
-    //     let aDate = 1;
-    //     let bYear = 2099;
-    //     let bMonth = 12;
-    //     let bDate = 31;
-    //     if (afterDate != null) {
-    //         aYear = parseInt(afterDate.slice(0, 4));
-    //         aMonth = parseInt(afterDate.slice(5, 6));
-    //         aDate = parseInt(afterDate.slice(-2));
-    //     }
-
-    //     if (beforeDate != null) {
-    //         bYear = parseInt(beforeDate.slice(0, 4));
-    //         bMonth = parseInt(beforeDate.slice(5, 6));
-    //         bDate = parseInt(beforeDate.slice(-2));
-    //     }
-
-    //     const where: any = {};
-
-    //     if (amCode) {
-    //         where.amCode = ILike(`%${amCode}%`);
-    //     }
-    //     if (endUser) {
-    //         where.endUser = ILike(`%${endUser}%`);
-    //     }
-    //     if (client) {
-    //         where.client = ILike(`%${client}%`);
-    //     }
-    //     if (updateUser) {
-    //         where.updateUser = ILike(`%${updateUser}%`);
-    //     }
-    //     if (aState) {
-    //         where.aState = ILike(`%${aState}%`);
-    //     }
-
-    //     where.updateDate = Between(new Date(aYear, aMonth - 1, aDate), new Date(bYear, bMonth - 1, bDate));
-
-    //     const Idle = await this.find({
-    //         where,
-    //     });
-
-    //     if (!Idle) {
-    //         throw new NotFoundException('Approval을 찾을 수 없습니다.');
-    //     }
-
-    //     return Idle;
-    // }
+    async getDetail(desertionNo: string): Promise<Idle> {
+        return await this.findOne({
+            where: { desertionNo: desertionNo },
+        });
+    }
 }

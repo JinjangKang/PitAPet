@@ -38,17 +38,9 @@ export class IdleController {
         return await this.IdleService.getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type);
     }
 
-    // @Get()
-    // @ApiOperation({ summary: 'amCode와 일치하는 Sale GET Query ver' })
-    // async getQuery(
-    //     @Query('amCode') amCode: string,
-    //     @Query('endUser') endUser: string,
-    //     @Query('client') client: string,
-    //     @Query('updateUser') updateUser: string,
-    //     @Query('aState') aState: string,
-    //     @Query('afterDate') afterDate: string,
-    //     @Query('beforeDate') beforeDate: string,
-    // ): Promise<any[]> {
-    //     return await this.IdleService.get(amCode, endUser, client, updateUser, aState, afterDate, beforeDate);
-    // }
+    @Get('detail')
+    @ApiOperation({ summary: '아이들 세부정보' })
+    async getDetail(@Query('desertionNo') desertionNo: string): Promise<Idle> {
+        return await this.IdleService.getDetail(desertionNo);
+    }
 }

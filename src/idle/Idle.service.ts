@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IdleRepository } from './Idle.repository';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { Idle } from './Idle.entity';
 
 @Injectable()
 export class IdleService {
@@ -15,15 +16,7 @@ export class IdleService {
         return await this.IdleRepository.getData(pageSize, offset, startDate, endDate, region, isUnderProtection, type);
     }
 
-    // async get(
-    //     asCode: string,
-    //     endUser: string,
-    //     client: string,
-    //     updateUser: string,
-    //     aState: string,
-    //     afterDate: string,
-    //     beforeDate: string,
-    // ): Promise<Idle[]> {
-    //     return this.IdleRepository.get(asCode, endUser, client, updateUser, aState, afterDate, beforeDate);
-    // }
+    async getDetail(desertionNo): Promise<Idle> {
+        return this.IdleRepository.getDetail(desertionNo);
+    }
 }
