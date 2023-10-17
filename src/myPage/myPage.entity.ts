@@ -8,4 +8,6 @@ export class Mypage extends BaseEntity {
         length: 100,
     })
     username: string;
+
+    @Column('varchar') dibList: string;
 }

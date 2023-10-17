@@ -9,8 +9,8 @@ export class LostImage extends BaseEntity {
     })
     lostNo: string;
 
-    @Column({ type: 'longblob' }) image1: Blob;
-    @Column({ type: 'longblob' }) image2: Blob;
-    @Column({ type: 'longblob' }) image3: Blob;
-    @Column({ type: 'longblob' }) image4: Blob;
+    @Column({ type: 'varchar' }) image1: string;
+    @Column({ type: 'varchar' }) image2: string;
+    @Column({ type: 'varchar' }) image3: string;
+    @Column({ type: 'varchar' }) image4: string;
 }

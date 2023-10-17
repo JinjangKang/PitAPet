@@ -17,10 +17,10 @@ export class lostImageRepository extends Repository<LostImage> {
             lostNo = 'L000001';
         }
 
-        const image1 = lostImage[0]?.buffer;
-        const image2 = lostImage[1]?.buffer;
-        const image3 = lostImage[2]?.buffer;
-        const image4 = lostImage[3]?.buffer;
+        const image1 = lostImage[0];
+        const image2 = lostImage[1];
+        const image3 = lostImage[2];
+        const image4 = lostImage[3];
         // const [image1, image2, image3, image4] = lostImage;
 
         await this.insert({
