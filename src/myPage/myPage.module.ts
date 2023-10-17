@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LocalStrategy } from './local.strategy';
+import { TypeOrmExModule } from '../typeorm-ex.module';
+import { MypageRepository } from './myPage.repository';
+import { MypageService } from './myPage.service';
+import { MypageController } from './myPage.controller';
+import { AuthService } from 'src/auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './auth.controller';
-import { TypeOrmExModule } from 'src/typeorm-ex.module';
-import { UserRepository } from './user.repository';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MypageRepository } from 'src/myPage/myPage.repository';
+import { UserRepository } from 'src/auth/user.repository';
 
 @Module({
     imports: [
-        TypeOrmExModule.forCustomRepository([UserRepository, MypageRepository]),
+        TypeOrmExModule.forCustomRepository([MypageRepository, UserRepository]),
         JwtModule.registerAsync({
             imports: [ConfigModule], // ConfigModule 사용을 위한 import 추가
             useFactory: async (configService: ConfigService) => ({
@@ -20,8 +20,7 @@ import { MypageRepository } from 'src/myPage/myPage.repository';
             inject: [ConfigService], // ConfigService 주입
         }),
     ],
-    controllers: [AuthController],
-    providers: [AuthService, LocalStrategy],
-    exports: [AuthService],
+    controllers: [MypageController],
+    providers: [MypageService, AuthService],
 })
-export class AuthModule {}
+export class MypageModule {}
