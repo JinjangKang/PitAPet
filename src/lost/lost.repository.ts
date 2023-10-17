@@ -86,9 +86,9 @@ export class lostRepository extends Repository<Lost> {
 
     async getDetail(lostNo): Promise<any> {
         const main = await this.findOne({ where: { lostNo: lostNo } });
-        const image = await dataSource.getRepository(LostImage).findOne({ where: { lostNo: lostNo } });
+        const images = await dataSource.getRepository(LostImage).findOne({ where: { lostNo: lostNo } });
 
-        return { ...main, image };
+        return { ...main, images };
     }
 
     // async get(
