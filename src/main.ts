@@ -4,11 +4,13 @@ import { setupSwagger } from './util/swagger';
 import * as multer from 'multer';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import path from 'path';
+import * as dotenv from 'dotenv';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     setupSwagger(app);
+    dotenv.config();
 
     const corsOptions: CorsOptions = {
         origin: 'http://localhost:3000', // 프론트엔드 도메인

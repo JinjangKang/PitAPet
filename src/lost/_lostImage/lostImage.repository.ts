@@ -6,7 +6,7 @@ import { Lost } from '../lost.entity';
 
 @CustomRepository(LostImage)
 export class lostImageRepository extends Repository<LostImage> {
-    async insertlostImage(lostImage): Promise<void> {
+    async insertlostImage(lostImages): Promise<void> {
         const lostNoCol = await dataSource.getRepository(Lost).findOne({
             where: {},
             order: { lostNo: 'DESC' },
@@ -17,10 +17,7 @@ export class lostImageRepository extends Repository<LostImage> {
             lostNo = 'L000001';
         }
 
-        const image1 = lostImage[0];
-        const image2 = lostImage[1];
-        const image3 = lostImage[2];
-        const image4 = lostImage[3];
+        const [image1, image2, image3, image4] = lostImages;
         // const [image1, image2, image3, image4] = lostImage;
 
         await this.insert({
