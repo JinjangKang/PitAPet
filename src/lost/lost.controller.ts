@@ -5,6 +5,7 @@ import { Lost } from './lost.entity';
 import { FilesInterceptor } from '@nestjs/platform-express/multer';
 import { CreatelostDto } from './dto/create_lost.dto';
 import { S3Service } from 'src/S3/s3.service';
+import { dataSource } from 'src/server';
 
 @Controller('lost')
 @ApiTags('lost API')
@@ -17,10 +18,20 @@ export class lostController {
     @ApiOperation({ summary: 'lost posting' })
     @UseInterceptors(FilesInterceptor('image'))
     async create(@Body() postData: CreatelostDto, @UploadedFiles() images: Express.Multer.File[]): Promise<void> {
-        //S3 서비스로 이미지 전송
-        await this.lostService.insert(postData);
+        let lostNo;
+        const lastRow = await dataSource.getRepository(Lost).find({
+            order: { lostNo: 'DESC' },
+        });
 
-        return await this.s3Service.uploadToS3(images);
+        if (lastRow.length !== 0) {
+            let lastRowNo = lastRow[0].lostNo;
+            lostNo = 'L' + (Number(lastRowNo.slice(-6)) + 1).toString().padStart(6, '0');
+        } else lostNo = 'L000001';
+
+        //S3 서비스로 이미지 전송
+        await this.lostService.insert(lostNo, postData);
+
+        return await this.s3Service.uploadToS3(lostNo, images);
     }
 
     // @Get('data')

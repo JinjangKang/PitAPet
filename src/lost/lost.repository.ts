@@ -7,19 +7,10 @@ import { dataSource } from 'src/server';
 
 @CustomRepository(Lost)
 export class lostRepository extends Repository<Lost> {
-    async insertlost(lostData: CreatelostDto): Promise<void> {
-        let lostNo: string;
+    async insertlost(lostNo: string, lostData: CreatelostDto): Promise<void> {
         let date = new Date();
         let createdDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
-        const lastRow = await this.find({
-            order: { lostNo: 'DESC' },
-        });
-
-        if (lastRow.length !== 0) {
-            let lastRowNo = lastRow[0].lostNo;
-            lostNo = 'L' + (Number(lastRowNo.slice(-6)) + 1).toString().padStart(6, '0');
-        } else lostNo = 'L000001';
         const {
             type,
             sexCd,

@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { LostImage } from 'src/lost/_lostImage/lostImage.entity';
 import { lostImageRepository } from 'src/lost/_lostImage/lostImage.repository';
 import { dataSource } from 'src/server';
+import { Index } from 'typeorm';
 
 @Injectable()
 export class S3Service {
@@ -13,15 +14,15 @@ export class S3Service {
         this.s3 = new AWS.S3();
     }
 
-    async uploadToS3(images: Express.Multer.File[]): Promise<any> {
+    async uploadToS3(lostNo: string, images: Express.Multer.File[]): Promise<any> {
         let urls = [];
-
+        let i = 1;
         for (let image of images) {
             const { originalname, buffer } = image;
 
             const uploadParams: AWS.S3.PutObjectRequest = {
                 Bucket: 'pitapetbucket',
-                Key: originalname, // 파일명으로 사용할 수 있지만 고유한 키로 설정하는 것이 좋습니다.
+                Key: `${lostNo}-${i}`, // 파일명으로 사용할 수 있지만 고유한 키로 설정하는 것이 좋습니다.
                 Body: buffer,
             };
 
@@ -32,7 +33,8 @@ export class S3Service {
             }
 
             urls.push(uploadResult.Location);
+            i++;
         }
-        return await this.lostImageRepository.insertlostImage(urls);
+        return await this.lostImageRepository.insertlostImage(lostNo, urls);
     }
 }
