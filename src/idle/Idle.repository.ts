@@ -2,8 +2,8 @@ import { CustomRepository } from 'src/typeorm-ex.decorator';
 import { Idle } from './Idle.entity';
 import { Between, ILike, Index, Repository } from 'typeorm';
 import axios from 'axios';
-import { formatDate } from 'util/util';
 import { dataSource } from 'src/server';
+import { formatDate } from 'src/util/util';
 
 @CustomRepository(Idle)
 export class IdleRepository extends Repository<Idle> {
