@@ -5,6 +5,7 @@ import { LostImage } from './lost/_lostImage/lostImage.entity';
 import { User } from './auth/user.entity';
 import { Mypage } from './myPage/myPage.entity';
 import { Community } from './community/community.entity';
+import { Reply } from './reply/Reply.entity';
 
 export const dataSource = new DataSource({
     type: 'mariadb', //Database 설정
@@ -13,7 +14,7 @@ export const dataSource = new DataSource({
     username: 'jinkang',
     password: '0408',
     database: 'pitapet',
-    entities: [Idle, Lost, LostImage, User, Mypage, Community],
+    entities: [Idle, Lost, LostImage, User, Mypage, Community, Reply],
 });
 
 dataSource.initialize();

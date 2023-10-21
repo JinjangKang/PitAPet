@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MypageModule } from './myPage/myPage.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { CommunityModule } from './community/community.module';
+import { ReplyModule } from './reply/reply.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { CommunityModule } from './community/community.module';
         lostImageModule,
         MypageModule,
         CommunityModule,
+        ReplyModule,
     ],
     controllers: [],
     providers: [],

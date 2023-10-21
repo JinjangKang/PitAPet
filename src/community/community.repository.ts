@@ -3,6 +3,8 @@ import { CustomRepository } from 'src/typeorm-ex.decorator';
 import { Repository } from 'typeorm';
 import { CreateCommunityDto } from './dto/create_community.dto';
 import { Community } from './community.entity';
+import { dataSource } from 'src/server';
+import { Reply } from 'src/reply/Reply.entity';
 
 @CustomRepository(Community)
 export class CommunityRepository extends Repository<Community> {
@@ -18,35 +20,33 @@ export class CommunityRepository extends Repository<Community> {
         });
     }
 
-    // async getData(pageSize, offset): Promise<any> {
-    //     let lost: any[] = await this.find({
-    //         take: pageSize,
-    //         skip: offset,
-    //     });
+    async getData(pageSize, offset): Promise<any> {
+        let post: any[] = await this.find({
+            take: pageSize,
+            skip: offset,
+        });
 
-    //     for (let e of lost) {
-    //         e.images = await dataSource.getRepository(LostImage).findOne({
-    //             where: { lostNo: e.lostNo },
-    //         });
-    //     }
+        for (let p of post) {
+            delete p.content;
+        }
 
-    //     let lostPageCnt = await this.count({
-    //         take: pageSize,
-    //         skip: offset,
-    //     });
+        let postPageCnt = await this.count({
+            take: pageSize,
+            skip: offset,
+        });
 
-    //     const losts = {
-    //         data: lost,
-    //         pageCount: Math.ceil(lostPageCnt / pageSize),
-    //     };
+        const posts = {
+            data: post,
+            pageCount: Math.ceil(postPageCnt / pageSize),
+        };
 
-    //     return losts;
-    // }
+        return posts;
+    }
 
-    // async getDetail(lostNo): Promise<any> {
-    //     const main = await this.findOne({ where: { lostNo: lostNo } });
-    //     const images = await dataSource.getRepository(LostImage).findOne({ where: { lostNo: lostNo } });
+    async getDetail(post_id): Promise<any> {
+        const post = await this.findOne({ where: { post_id: post_id } });
+        const replies = await dataSource.getRepository(Reply).find({ where: { post_id: post_id } });
 
-    //     return { ...main, images };
-    // }
+        return { post, replies };
+    }
 }

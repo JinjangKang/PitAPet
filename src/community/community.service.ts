@@ -14,13 +14,13 @@ export class CommunityService {
     //     return await this.communityRepository.getall();
     // }
 
-    // async getData(pageSize, offset): Promise<any[]> {
-    //     return await this.communityRepository.getData(pageSize, offset);
-    // }
+    async getData(pageSize, offset): Promise<any[]> {
+        return await this.communityRepository.getData(pageSize, offset);
+    }
 
-    // async getDetail(communityNo): Promise<any> {
-    //     return await this.communityRepository.getDetail(communityNo);
-    // }
+    async getDetail(post_id): Promise<any> {
+        return await this.communityRepository.getDetail(post_id);
+    }
 
     // async get(
     //     asCode: string,

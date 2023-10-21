@@ -82,10 +82,12 @@ export class IdleRepository extends Repository<Idle> {
                 console.error('GET 요청 실패:', error);
                 console.error(`${today}`);
             }
+            console.log(`---------------------------------------------------`);
             console.log(``);
             console.log(``);
             console.log(``);
             console.log(``);
+            console.log(`${new Date().getHours()}시 00분`);
             console.log(`${formattedDate}의 데이터 포스팅을 완료했습니다.`);
             console.log(``);
             console.log(``);
