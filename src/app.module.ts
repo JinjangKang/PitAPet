@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { MypageModule } from './myPage/myPage.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { CommunityModule } from './community/community.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { MulterModule } from '@nestjs/platform-express';
         lostModule,
         lostImageModule,
         MypageModule,
+        CommunityModule,
     ],
     controllers: [],
     providers: [],

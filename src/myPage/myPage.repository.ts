@@ -4,12 +4,24 @@ import { Mypage } from './myPage.entity';
 import { CreateMypageDto } from './dto/create_myPage.dto';
 import { dataSource } from 'src/server';
 import { Idle } from 'src/idle/Idle.entity';
+import { Community } from 'src/community/community.entity';
 
 @CustomRepository(Mypage)
 export class MypageRepository extends Repository<Mypage> {
     // 사용자 등록 메서드
     async createMypage(user: CreateMypageDto): Promise<void> {
         this.insert(user);
+    }
+
+    //사용자 마이페이지 가져오기. 유저정보, 찜 목록
+    async getmypage(user): Promise<any> {
+        return {
+            user: user,
+            dibList: await this.getDibs(user.username),
+            myPosting: await dataSource
+                .getRepository(Community)
+                .find({ where: { username: user.username }, order: { post_id: 'desc' } }),
+        };
     }
 
     //찜 리스트 등록

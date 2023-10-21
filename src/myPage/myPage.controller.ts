@@ -11,7 +11,8 @@ export class MypageController {
     @UseGuards(AuthGuard)
     @Get()
     async getMyPage(@Req() req) {
-        return { user: req.user };
+        const user = req.user;
+        return this.mypageService.mypage(user);
     }
 
     @UseGuards(AuthGuard)
@@ -23,11 +24,11 @@ export class MypageController {
         return await this.mypageService.dibIdle(username, desertionNo);
     }
 
-    @UseGuards(AuthGuard)
-    @Get('diblist')
-    @ApiOperation({ summary: '찜 목록 가져오기' })
-    async getDibs(@Req() req): Promise<any> {
-        const username = req.user.username;
-        return await this.mypageService.getDibs(username);
-    }
+    // @UseGuards(AuthGuard)
+    // @Get('diblist')
+    // @ApiOperation({ summary: '찜 목록 가져오기' })
+    // async getDibs(@Req() req): Promise<any> {
+    //     const username = req.user.username;
+    //     return await this.mypageService.getDibs(username);
+    // }
 }
