@@ -24,6 +24,15 @@ export class MypageController {
         return await this.mypageService.dibIdle(username, desertionNo);
     }
 
+    @UseGuards(AuthGuard)
+    @Patch('deleteDib')
+    @ApiOperation({ summary: '찜 삭제하기' })
+    async deleteDib(@Req() req, @Query('desertionNo') desertionNo: string): Promise<any> {
+        const username = req.user.username;
+
+        return await this.mypageService.deleteDib(username, desertionNo);
+    }
+
     // @UseGuards(AuthGuard)
     // @Get('diblist')
     // @ApiOperation({ summary: '찜 목록 가져오기' })

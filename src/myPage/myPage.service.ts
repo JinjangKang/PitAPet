@@ -14,6 +14,10 @@ export class MypageService {
         return this.mypageRepository.dibIdle(username, desertionNo);
     }
 
+    async deleteDib(username: string, desertionNo: string): Promise<string> {
+        return this.mypageRepository.deleteDib(username, desertionNo);
+    }
+
     async getDibs(username: string): Promise<any> {
         return this.mypageRepository.getDibs(username);
     }
