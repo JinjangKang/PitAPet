@@ -43,6 +43,20 @@ export class MypageRepository extends Repository<Mypage> {
         }
     }
 
+    async deleteDib(username: string, desertionNo: string): Promise<any> {
+        let dibListString = (await this.findOne({ where: { username } })).dibList;
+
+        let dibList = JSON.parse(dibListString);
+        dibList = dibList.filter((v) => {
+            return v != desertionNo;
+        });
+
+        await this.update({ username: username }, { dibList: JSON.stringify(dibList) });
+        return '찜 삭제 완료 ~';
+    }
+
+    //찜리스트 삭제
+
     //찜리스트 가져오기
     async getDibs(username: string): Promise<any> {
         const dibList = JSON.parse((await this.findOne({ where: { username: username } })).dibList);
