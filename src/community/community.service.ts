@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommunityRepository } from './community.repository';
 import { CreateCommunityDto } from './dto/create_community.dto';
+import { UpdateCommunityDto } from './dto/update_community.dto';
 
 @Injectable()
 export class CommunityService {
@@ -10,9 +11,13 @@ export class CommunityService {
         return await this.communityRepository.posting(username, post);
     }
 
-    // async getall() {
-    //     return await this.communityRepository.getall();
-    // }
+    async editPost(post_id: number, post: UpdateCommunityDto) {
+        return await this.communityRepository.editPost(post_id, post);
+    }
+
+    async deletePost(post_id: number) {
+        return await this.communityRepository.deletePost(post_id);
+    }
 
     async getData(pageSize, offset): Promise<any[]> {
         return await this.communityRepository.getData(pageSize, offset);

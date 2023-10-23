@@ -5,6 +5,7 @@ import { LostImage } from 'src/lost/_lostImage/lostImage.entity';
 import { lostImageRepository } from 'src/lost/_lostImage/lostImage.repository';
 import { dataSource } from 'src/server';
 import { Index } from 'typeorm';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 @Injectable()
 export class S3Service {

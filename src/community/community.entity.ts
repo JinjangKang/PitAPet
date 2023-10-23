@@ -1,4 +1,12 @@
-import { BaseEntity, Column, Entity, DeleteDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    DeleteDateColumn,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('COMMUNITY', { schema: 'pitapet' })
 export class Community extends BaseEntity {
@@ -9,5 +17,6 @@ export class Community extends BaseEntity {
     @Column('varchar') title: string;
     @Column('varchar') content: string;
     @Column('varchar') created_at: Date;
-    @Column('varchar') updated_at: Date;
+    @UpdateDateColumn() updated_at: Date;
+    @DeleteDateColumn() deleted_at: Date;
 }

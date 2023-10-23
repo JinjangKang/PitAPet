@@ -86,9 +86,13 @@ export class IdleRepository extends Repository<Idle> {
             console.log(``);
             console.log(``);
             console.log(``);
+            console.log(`${new Date().getHours()}시 ${new Date().getMinutes()}분`);
             console.log(``);
-            console.log(`${new Date().getHours()}시 00분`);
-            console.log(`${formattedDate}의 데이터 포스팅을 완료했습니다.`);
+            console.log(
+                `${formattedDate.slice(0, 4)}년${formattedDate.slice(4, 6)}월${formattedDate.slice(
+                    -2,
+                )}일의 데이터 포스팅을 완료했습니다.`,
+            );
             console.log(``);
             console.log(``);
             console.log(``);
