@@ -35,6 +35,7 @@ export class CommunityRepository extends Repository<Community> {
         let post: any[] = await this.find({
             take: pageSize,
             skip: offset,
+            order: { post_id: 'desc' },
         });
 
         for (let p of post) {
