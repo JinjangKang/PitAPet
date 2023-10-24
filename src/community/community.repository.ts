@@ -20,7 +20,12 @@ export class CommunityRepository extends Repository<Community> {
             created_at,
         });
 
-        return (await this.findOne({ where: { created_at: created_at } })).post_id;
+        let posting = await this.createQueryBuilder('COMMUNITY')
+            .select('COMMUNITY.post_id')
+            .orderBy('COMMUNITY.post_id', 'DESC')
+            .getOne();
+
+        return posting.post_id;
     }
 
     async editPost(post_id: number, post: UpdateCommunityDto) {
