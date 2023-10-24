@@ -19,6 +19,8 @@ export class CommunityRepository extends Repository<Community> {
             content,
             created_at,
         });
+
+        return (await this.findOne({ where: { created_at: created_at } })).post_id;
     }
 
     async editPost(post_id: number, post: UpdateCommunityDto) {
