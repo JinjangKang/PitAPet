@@ -15,7 +15,7 @@ import { MypageRepository } from 'src/myPage/myPage.repository';
             imports: [ConfigModule], // ConfigModule 사용을 위한 import 추가
             useFactory: async (configService: ConfigService) => ({
                 secret: configService.get<string>('JWT_SECRET_KEY'), // 환경 변수에서 시크릿 키 가져오기
-                signOptions: { expiresIn: '1h' },
+                signOptions: { expiresIn: '12h' },
             }),
             inject: [ConfigService], // ConfigService 주입
         }),

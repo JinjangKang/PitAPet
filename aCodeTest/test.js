@@ -1,32 +1,55 @@
-let today = new Date(formatDate(new Date())['yyyy.mm.dd']);
+var map;
 
-console.log(today);
+function initMap() {
+    // 네이버 지도 생성
+    map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(37.5665, 126.978), // 초기 중심 좌표 (서울)
+        zoom: 12, // 초기 확대 수준
+    });
 
-function formatDate(inputDate) {
-    let date;
-    if (typeof inputDate === 'string') {
-        // 입력값이 "yyyyMMdd" 형식인 경우 "-"를 추가하여 "yyyy-mm-dd" 형식으로 변환
-        if (/^\d{8}$/.test(inputDate)) {
-            inputDate = inputDate.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
-        }
-        // 문자열 형태의 날짜를 Date 객체로 변환
-        date = new Date(inputDate);
-    } else if (inputDate instanceof Date) {
-        // 이미 Date 객체인 경우 그대로 사용
-        date = inputDate;
+    // 현재 위치 가져오기lo
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            // 현재 위치로 지도 이동
+            map.setCenter(new naver.maps.LatLng(lat, lng));
+
+            // 주변 동물병원 마커 표시
+            showAnimalHospitals(lat, lng);
+        });
     } else {
-        throw new Error('Invalid input. Input should be a string or a Date object.');
+        alert('Geolocation is not supported by this browser.');
     }
+}
 
-    const yyyyYear = date.getFullYear();
-    const yyYear = yyyyYear.toString().slice(2);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줍니다.
-    const day = date.getDate().toString().padStart(2, '0');
+function showAnimalHospitals(lat, lng) {
+    // 주변 동물병원 검색을 위한 URL 생성
+    var apiUrl =
+        'https://naveropenapi.apigw.ntruss.com/map-place/v1/search?query=동물병원&coordinate=' + lng + ',' + lat;
 
-    return {
-        'yy.mm.dd': `${yyYear}.${month}.${day}`,
-        'yyyy.mm.dd': `${yyyyYear}.${month}.${day}`,
-        'yy-mm-dd': `${yyYear}-${month}-${day}`,
-        'yyyy-mm-dd': `${yyyyYear}-${month}-${day}`,
-    };
+    // AJAX를 사용하여 API 호출
+    $.ajax({
+        url: apiUrl,
+        method: 'GET',
+        headers: {
+            'X-NCP-APIGW-API-KEY-ID': 'kmzsuh19wt',
+            'X-NCP-APIGW-API-KEY': 'DARp2YP0JqRuGgNpxnVz9bUpGO2L4YWwZUoaAwiB',
+        },
+        success: function (data) {
+            // 검색 결과를 반복하며 마커 표시
+            for (var i = 0; i < data.places.length; i++) {
+                var place = data.places[i];
+                var marker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(place.y, place.x),
+                    map: map,
+                    title: place.name,
+                });
+            }
+        },
+        error: function (error) {
+            console.error('Error fetching animal hospitals:', error);
+        },
+    });
 }

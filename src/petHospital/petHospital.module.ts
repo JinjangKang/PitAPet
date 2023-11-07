@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmExModule } from 'src/typeorm-ex.module';
-import { CommunityRepository } from './community.repository';
-import { CommunityController } from './community.controller';
-import { CommunityService } from './community.service';
+import { petHospitalRepository } from './petHospital.repository';
+import { petHospitalController } from './petHospital.controller';
+import { petHospitalService } from './petHospital.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from 'src/auth/auth.service';
@@ -11,7 +11,7 @@ import { MypageRepository } from 'src/myPage/myPage.repository';
 
 @Module({
     imports: [
-        TypeOrmExModule.forCustomRepository([CommunityRepository, UserRepository, MypageRepository]),
+        TypeOrmExModule.forCustomRepository([petHospitalRepository, UserRepository, MypageRepository]),
         JwtModule.registerAsync({
             imports: [ConfigModule], // ConfigModule 사용을 위한 import 추가
             useFactory: async (configService: ConfigService) => ({
@@ -21,7 +21,7 @@ import { MypageRepository } from 'src/myPage/myPage.repository';
             inject: [ConfigService], // ConfigService 주입
         }),
     ],
-    controllers: [CommunityController],
-    providers: [CommunityService, AuthService],
+    controllers: [petHospitalController],
+    providers: [petHospitalService, AuthService],
 })
-export class CommunityModule {}
+export class petHospitalModule {}

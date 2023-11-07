@@ -10,6 +10,8 @@ import { MypageModule } from './myPage/myPage.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { CommunityModule } from './community/community.module';
 import { ReplyModule } from './reply/reply.module';
+import { petHospital } from './petHospital/petHospital.entity';
+import { petHospitalModule } from './petHospital/petHospital.module';
 
 @Module({
     imports: [
@@ -25,6 +27,7 @@ import { ReplyModule } from './reply/reply.module';
         MypageModule,
         CommunityModule,
         ReplyModule,
+        petHospitalModule,
     ],
     controllers: [],
     providers: [],
