@@ -21,15 +21,13 @@ export class MypageController {
     async dibIdle(@Req() req, @Body('desertionNo') desertionNo: string): Promise<any> {
         const username = req.user.username;
 
-        console.log(desertionNo);
-
         return await this.mypageService.dibIdle(username, desertionNo);
     }
 
     @UseGuards(AuthGuard)
     @Patch('deleteDib')
     @ApiOperation({ summary: '찜 삭제하기' })
-    async deleteDib(@Req() req, @Query('desertionNo') desertionNo: string): Promise<any> {
+    async deleteDib(@Req() req, @Body('desertionNo') desertionNo: string): Promise<any> {
         const username = req.user.username;
 
         return await this.mypageService.deleteDib(username, desertionNo);
