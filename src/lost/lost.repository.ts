@@ -25,6 +25,7 @@ export class lostRepository extends Repository<Lost> {
             reward,
             title,
             detail,
+            petName,
         } = lostData;
 
         await this.insert({
@@ -43,6 +44,7 @@ export class lostRepository extends Repository<Lost> {
             title,
             detail,
             createdDate,
+            petName,
         });
     }
 

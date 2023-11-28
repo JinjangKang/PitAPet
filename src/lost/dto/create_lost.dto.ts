@@ -31,4 +31,6 @@ export class CreatelostDto {
     detail: string;
     @ApiProperty({ description: 'image' })
     image: FormData;
+    @ApiProperty({ description: 'petName' })
+    petName: string;
 }
