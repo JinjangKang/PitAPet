@@ -1,13 +1,8 @@
 import { CustomRepository } from 'src/typeorm-ex.decorator';
-
 import { Repository } from 'typeorm';
 import { CreatepetHospitalDto } from './dto/create_petHospital.dto';
 import { petHospital } from './petHospital.entity';
-import { dataSource } from 'src/server';
-import { Reply } from 'src/reply/Reply.entity';
-import { Update } from 'aws-sdk/clients/dynamodb';
 import { UpdatepetHospitalDto } from './dto/update_petHospital.dto';
-import { repl } from '@nestjs/core';
 
 @CustomRepository(petHospital)
 export class petHospitalRepository extends Repository<petHospital> {

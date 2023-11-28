@@ -39,6 +39,7 @@ export class petHospitalController {
 
     @Get('Replies')
     @ApiOperation({ summary: 'get replies' })
+    @ApiQuery({ name: 'LatLng', required: true, type: String })
     async getData(@Query() LatLng): Promise<petHospital[]> {
         return await this.petHospitalService.getReplies(LatLng);
     }

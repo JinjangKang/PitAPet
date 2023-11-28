@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MypageService } from './myPage.service';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -18,8 +18,10 @@ export class MypageController {
     @UseGuards(AuthGuard)
     @Patch('dib')
     @ApiOperation({ summary: '아이들 찜하기' })
-    async dibIdle(@Req() req, @Query('desertionNo') desertionNo: string): Promise<any> {
+    async dibIdle(@Req() req, @Body('desertionNo') desertionNo: string): Promise<any> {
         const username = req.user.username;
+
+        console.log(desertionNo);
 
         return await this.mypageService.dibIdle(username, desertionNo);
     }
