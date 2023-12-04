@@ -33,9 +33,8 @@ export class CommunityController {
     @Delete('deletePost')
     @ApiOperation({ summary: 'Delete post' })
     @ApiQuery({ name: 'post_id', required: true })
-    async deletePost(@Req() req, @Query() post_id): Promise<any> {
-        post_id = post_id.post_id;
-        return await this.communityService.deletePost(post_id);
+    async deletePost(@Req() req, @Body() post_id): Promise<any> {
+        return await this.communityService.deletePost(post_id.post_id);
     }
 
     @Get('data')
