@@ -32,6 +32,7 @@ export class CommunityController {
     @UseGuards(AuthGuard)
     @Delete('deletePost')
     @ApiOperation({ summary: 'Delete post' })
+    @ApiQuery({ name: 'post_id', required: true })
     async deletePost(@Req() req, @Query() post_id): Promise<any> {
         post_id = post_id.post_id;
         return await this.communityService.deletePost(post_id);
