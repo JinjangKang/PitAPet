@@ -8,7 +8,7 @@ export class Reply extends BaseEntity {
     @Column('varchar') post_id: number;
     @Column('varchar') username: string;
     @Column('varchar') content: string;
-    @Column('varchar') created_at: Date;
-    @Column('varchar') updated_at: Date;
+    @Column('datetime') created_at: Date;
+    @Column('datetime') updated_at: Date;
     @DeleteDateColumn() deleted_at: Date;
 }

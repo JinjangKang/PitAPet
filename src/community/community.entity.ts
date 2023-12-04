@@ -16,7 +16,7 @@ export class Community extends BaseEntity {
     @Column('varchar') username: string;
     @Column('varchar') title: string;
     @Column('varchar') content: string;
-    @Column('varchar') created_at: Date;
+    @Column('datetime') created_at: Date;
     @UpdateDateColumn() updated_at: Date;
     @DeleteDateColumn() deleted_at: Date;
     @Column('int') like: number;

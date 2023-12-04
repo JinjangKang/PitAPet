@@ -9,6 +9,7 @@ export class ReplyRepository extends Repository<Reply> {
     async posting(username: string, post: CreateReplyDto): Promise<any> {
         const { post_id, content } = post;
         const created_at = new Date();
+        console.log(created_at);
         await this.insert({
             post_id,
             username,
