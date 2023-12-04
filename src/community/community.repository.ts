@@ -64,8 +64,26 @@ export class CommunityRepository extends Repository<Community> {
 
     async getDetail(post_id): Promise<any> {
         const post = await this.findOne({ where: { post_id: post_id } });
-        const replies = await dataSource.getRepository(Reply).find({ where: { post_id: post_id } });
+        const replies = await dataSource
+            .getRepository(Reply)
+            .find({ where: { post_id: post_id }, order: { post_id: 'DESC' } });
+        const view = post.view + 1;
 
+        await this.update({ post_id: post_id }, { view: view });
         return { post, replies };
+    }
+
+    async likePost(post_id): Promise<any> {
+        const post = await this.findOne({ where: { post_id: post_id } });
+        const like = post.like + 1;
+
+        await this.update({ post_id: post_id }, { like: like });
+    }
+
+    async hatePost(post_id): Promise<any> {
+        const post = await this.findOne({ where: { post_id: post_id } });
+        const like = post.like - 1;
+
+        await this.update({ post_id: post_id }, { like: like });
     }
 }

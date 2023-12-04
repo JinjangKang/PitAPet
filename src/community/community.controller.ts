@@ -52,4 +52,18 @@ export class CommunityController {
     async getDetail(@Query('post_id') post_id: number): Promise<Community> {
         return await this.communityService.getDetail(post_id);
     }
+
+    @Patch('like')
+    @ApiOperation({ summary: '디테일 좋아요 하기' })
+    @ApiQuery({ name: 'post_id', required: true })
+    async likePost(@Query('post_id') post_id: number): Promise<Community> {
+        return await this.communityService.likePost(post_id);
+    }
+
+    @Patch('hate')
+    @ApiOperation({ summary: '디테일 좋아요 하기' })
+    @ApiQuery({ name: 'post_id', required: true })
+    async hatePost(@Query('post_id') post_id: number): Promise<Community> {
+        return await this.communityService.hatePost(post_id);
+    }
 }
