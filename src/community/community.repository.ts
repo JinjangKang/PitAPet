@@ -66,7 +66,7 @@ export class CommunityRepository extends Repository<Community> {
         const post = await this.findOne({ where: { post_id: post_id } });
         const replies = await dataSource
             .getRepository(Reply)
-            .find({ where: { post_id: post_id }, order: { post_id: 'DESC' } });
+            .find({ where: { post_id: post_id }, order: { reply_id: 'DESC' } });
         const view = post.view + 1;
 
         await this.update({ post_id: post_id }, { view: view });
