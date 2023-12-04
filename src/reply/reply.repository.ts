@@ -17,6 +17,10 @@ export class ReplyRepository extends Repository<Reply> {
         });
     }
 
+    async deleteReply(reply_id: number) {
+        await this.softDelete({ reply_id: reply_id });
+    }
+
     // async getData(pageSize, offset): Promise<any> {
     //     let lost: any[] = await this.find({
     //         take: pageSize,

@@ -10,6 +10,10 @@ export class ReplyService {
         return await this.ReplyRepository.posting(username, post);
     }
 
+    async deleteReply(reply_id: number) {
+        return await this.ReplyRepository.deleteReply(reply_id);
+    }
+
     // async getall() {
     //     return await this.ReplyRepository.getall();
     // }

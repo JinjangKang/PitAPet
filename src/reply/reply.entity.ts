@@ -10,4 +10,5 @@ export class Reply extends BaseEntity {
     @Column('varchar') content: string;
     @Column('varchar') created_at: Date;
     @Column('varchar') updated_at: Date;
+    @DeleteDateColumn() deleted_at: Date;
 }

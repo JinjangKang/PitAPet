@@ -1,5 +1,5 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Post, Req, UseGuards } from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ReplyService } from './Reply.service';
 import { CreateReplyDto } from './dto/create_Reply.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -17,6 +17,14 @@ export class ReplyController {
     async create(@Req() req, @Body() post: CreateReplyDto): Promise<void> {
         const username = req.user.username;
         return await this.ReplyService.post(username, post);
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete('deleteReply')
+    @ApiOperation({ summary: 'Delete Reply' })
+    @ApiQuery({ name: 'reply_id', required: true })
+    async deleteReply(@Req() req, @Body() reply_id): Promise<any> {
+        return await this.ReplyService.deleteReply(reply_id.reply_id);
     }
 
     // // @Get('data')
