@@ -12,7 +12,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
         super({
             clientID: 'a903a9d92bef0296414af88784809cce',
             clientSecret: 'QHONQs2FiVQgbCBppHgHsEtGf6PZz3ER',
-            callbackURL: 'http://localhost:3000',
+            callbackURL: 'http://localhost:3000/kakaoLogin',
         });
     }
 
@@ -20,7 +20,8 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
         let kakaoId = profile.id;
         let username = profile.username;
 
-        return await this.authService.checkKaKao(username);
+        await this.authService.checkKaKao(username);
+        return { accessToken, kakaoId };
     }
 
     // async authorize(clientID: string, clientSecret: string, code: string): Promise<any> {

@@ -24,9 +24,11 @@ export class UserRepository extends Repository<User> {
     }
 
     async checkKaKao(username) {
-        let isin = this.findOne({ where: { username } });
+        let isin = await this.findOne({ where: { username } });
+        console.log(isin);
+
         if (!isin) {
-            await this.save(username);
+            await this.save({ username });
         }
         return isin;
     }
