@@ -9,6 +9,8 @@ import {
     UploadedFile,
     Bind,
     Delete,
+    UseGuards,
+    Req,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { lostService } from './lost.service';
@@ -17,6 +19,7 @@ import { FilesInterceptor } from '@nestjs/platform-express/multer';
 import { CreatelostDto } from './dto/create_lost.dto';
 import { S3Service } from 'src/S3/s3.service';
 import { dataSource } from 'src/server';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('lost')
 @ApiTags('lost API')
@@ -25,10 +28,16 @@ export class lostController {
         this.lostService = lostService;
     }
 
+    @UseGuards(AuthGuard)
     @Post()
     @ApiOperation({ summary: 'lost posting' })
     @UseInterceptors(FilesInterceptor('image'))
-    async create(@Body() postData: CreatelostDto, @UploadedFiles() images: Express.Multer.File[]): Promise<void> {
+    async create(
+        @Req() req,
+        @Body() postData: CreatelostDto,
+        @UploadedFiles() images: Express.Multer.File[],
+    ): Promise<void> {
+        const username = req.user.username;
         let lostNo;
         const lastRow = await dataSource.getRepository(Lost).find({
             order: { lostNo: 'DESC' },
@@ -40,7 +49,7 @@ export class lostController {
         } else lostNo = 'L000001';
 
         //S3 서비스로 이미지 전송
-        await this.lostService.insert(lostNo, postData);
+        await this.lostService.insert(username, lostNo, postData);
 
         return await this.s3Service.uploadToS3(lostNo, images);
     }

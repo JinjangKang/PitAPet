@@ -5,6 +5,8 @@ import { CreateMypageDto } from './dto/create_myPage.dto';
 import { dataSource } from 'src/server';
 import { Idle } from 'src/idle/Idle.entity';
 import { Community } from 'src/community/community.entity';
+import { Lost } from 'src/lost/lost.entity';
+import { LostImage } from 'src/lost/_lostImage/lostImage.entity';
 
 @CustomRepository(Mypage)
 export class MypageRepository extends Repository<Mypage> {
@@ -20,9 +22,11 @@ export class MypageRepository extends Repository<Mypage> {
         for (let i of likeList) {
             myLikes.push(await dataSource.getRepository(Community).findOne({ where: { post_id: i } }));
         }
+
         return {
             user: user,
             dibList: await this.getDibs(user.username),
+            lostList: await this.getLosts(user.username),
             likeList: myLikes,
             myPosting: await dataSource
                 .getRepository(Community)
@@ -104,6 +108,25 @@ export class MypageRepository extends Repository<Mypage> {
             for (let desertionNo of dibList) {
                 let dib = await dataSource.getRepository(Idle).findOne({ where: { desertionNo: desertionNo } });
                 list.push(dib);
+            }
+        } catch (e) {
+            list = [];
+        }
+
+        return list;
+    }
+
+    async getLosts(username: string): Promise<any> {
+        let list = [];
+        try {
+            const lostList = JSON.parse((await this.findOne({ where: { username: username } })).lostList);
+
+            list = [];
+
+            for (let lostNo of lostList) {
+                let dib = await dataSource.getRepository(Lost).findOne({ where: { lostNo: lostNo } });
+                let popfile = (await dataSource.getRepository(LostImage).findOne({ where: { lostNo: lostNo } })).image1;
+                list.push({ ...dib, popfile });
             }
         } catch (e) {
             list = [];

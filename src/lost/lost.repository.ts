@@ -6,10 +6,11 @@ import { LostImage } from './_lostImage/lostImage.entity';
 import { dataSource } from 'src/server';
 import { LostReply } from 'src/lostReply/lostReply.entity';
 import { repl } from '@nestjs/core';
+import { Mypage } from 'src/myPage/myPage.entity';
 
 @CustomRepository(Lost)
 export class lostRepository extends Repository<Lost> {
-    async insertlost(lostNo: string, lostData: CreatelostDto): Promise<void> {
+    async insertlost(username, lostNo: string, lostData: CreatelostDto): Promise<void> {
         let date = new Date();
         let createdDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
@@ -47,7 +48,14 @@ export class lostRepository extends Repository<Lost> {
             detail,
             createdDate,
             petName,
+            username,
         });
+        let lostListString = (await dataSource.getRepository(Mypage).findOne({ where: { username } })).lostList || '[]';
+
+        let lostList = JSON.parse(lostListString);
+        lostList.push(lostNo);
+        lostList = JSON.stringify(lostList);
+        await dataSource.getRepository(Mypage).update({ username: username }, { lostList: lostList });
     }
 
     async getall() {

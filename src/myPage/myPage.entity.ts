@@ -11,4 +11,5 @@ export class Mypage extends BaseEntity {
 
     @Column('varchar') dibList: string;
     @Column('varchar') likeList: string;
+    @Column('varchar') lostList: string;
 }
