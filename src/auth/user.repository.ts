@@ -22,4 +22,12 @@ export class UserRepository extends Repository<User> {
     async findByUsername(username: string): Promise<User | undefined> {
         return this.findOne({ where: { username } });
     }
+
+    async checkKaKao(username) {
+        let isin = this.findOne({ where: { username } });
+        if (!isin) {
+            await this.save(username);
+        }
+        return isin;
+    }
 }

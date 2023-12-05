@@ -7,6 +7,8 @@ import { TypeOrmExModule } from 'src/typeorm-ex.module';
 import { UserRepository } from './user.repository';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MypageRepository } from 'src/myPage/myPage.repository';
+import { KakaoStrategy } from './kakao.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
     imports: [
@@ -19,9 +21,10 @@ import { MypageRepository } from 'src/myPage/myPage.repository';
             }),
             inject: [ConfigService], // ConfigService 주입
         }),
+        PassportModule.register({ defaultStrategy: 'kakao' }),
     ],
     controllers: [AuthController],
-    providers: [AuthService, LocalStrategy],
+    providers: [AuthService, LocalStrategy, KakaoStrategy],
     exports: [AuthService],
 })
 export class AuthModule {}

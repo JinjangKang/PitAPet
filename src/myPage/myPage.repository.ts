@@ -15,10 +15,15 @@ export class MypageRepository extends Repository<Mypage> {
 
     //사용자 마이페이지 가져오기. 유저정보, 찜 목록
     async getmypage(user): Promise<any> {
+        let likeList = JSON.parse((await this.findOne({ where: { username: user.username } })).likeList || '[]');
+        let myLikes = [];
+        for (let i of likeList) {
+            myLikes.push(await dataSource.getRepository(Community).findOne({ where: { post_id: i } }));
+        }
         return {
             user: user,
             dibList: await this.getDibs(user.username),
-            likeList: JSON.parse((await this.findOne({ where: { username: user.username } })).likeList || '[]'),
+            likeList: myLikes,
             myPosting: await dataSource
                 .getRepository(Community)
                 .find({ where: { username: user.username }, order: { post_id: 'desc' } }),

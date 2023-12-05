@@ -80,4 +80,8 @@ export class AuthService {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         return hashedPassword;
     }
+
+    async checkKaKao(username) {
+        await this.userRepository.checkKaKao(username);
+    }
 }
