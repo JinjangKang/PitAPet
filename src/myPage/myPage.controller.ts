@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { MypageService } from './myPage.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -33,11 +33,13 @@ export class MypageController {
         return await this.mypageService.deleteDib(username, desertionNo);
     }
 
-    // @UseGuards(AuthGuard)
-    // @Get('diblist')
-    // @ApiOperation({ summary: '찜 목록 가져오기' })
-    // async getDibs(@Req() req): Promise<any> {
-    //     const username = req.user.username;
-    //     return await this.mypageService.getDibs(username);
-    // }
+    @UseGuards(AuthGuard)
+    @Patch('like')
+    @ApiOperation({ summary: '좋아요' })
+    @ApiQuery({ name: 'post_id', required: true, type: String })
+    async likePost(@Req() req, @Body('post_id') post_id: string): Promise<any> {
+        const username = req.user.username;
+
+        return await this.mypageService.like(username, post_id);
+    }
 }

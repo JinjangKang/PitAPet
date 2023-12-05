@@ -10,4 +10,5 @@ export class Mypage extends BaseEntity {
     username: string;
 
     @Column('varchar') dibList: string;
+    @Column('varchar') likeList: string;
 }

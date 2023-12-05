@@ -55,7 +55,37 @@ export class MypageRepository extends Repository<Mypage> {
         return '찜 삭제 완료 ~';
     }
 
-    //찜리스트 삭제
+    //찜 리스트 등록
+    async like(username: string, post_id: string): Promise<any> {
+        let likeListString = (await this.findOne({ where: { username } })).likeList;
+        let message;
+        let like = (await dataSource.getRepository(Community).findOne({ where: { post_id: Number(post_id) } })).like;
+
+        if (likeListString) {
+            let likeList = JSON.parse(likeListString);
+
+            if (!(likeList.indexOf(post_id) >= 0)) {
+                likeList = [...likeList, post_id];
+
+                message = '좋아요 완료';
+                await dataSource.getRepository(Community).update({ post_id: Number(post_id) }, { like: like + 1 });
+            } else {
+                likeList = likeList.filter((v) => {
+                    return v != post_id;
+                });
+                message = '좋아요 취소';
+                await dataSource.getRepository(Community).update({ post_id: Number(post_id) }, { like: like - 1 });
+            }
+
+            await this.update({ username: username }, { likeList: JSON.stringify(likeList) });
+            return message;
+        } else {
+            await dataSource.getRepository(Community).update({ post_id: Number(post_id) }, { like: like++ });
+
+            await this.update({ username: username }, { likeList: JSON.stringify([post_id]) });
+            return '좋아요 완료';
+        }
+    }
 
     //찜리스트 가져오기
     async getDibs(username: string): Promise<any> {

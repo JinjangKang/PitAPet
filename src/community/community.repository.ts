@@ -72,18 +72,4 @@ export class CommunityRepository extends Repository<Community> {
         await this.update({ post_id: post_id }, { view: view });
         return { post, replies };
     }
-
-    async likePost(post_id): Promise<any> {
-        const post = await this.findOne({ where: { post_id: post_id } });
-        const like = post.like + 1;
-
-        await this.update({ post_id: post_id }, { like: like });
-    }
-
-    async hatePost(post_id): Promise<any> {
-        const post = await this.findOne({ where: { post_id: post_id } });
-        const like = post.like - 1;
-
-        await this.update({ post_id: post_id }, { like: like });
-    }
 }

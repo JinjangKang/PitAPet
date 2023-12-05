@@ -18,6 +18,10 @@ export class MypageService {
         return this.mypageRepository.deleteDib(username, desertionNo);
     }
 
+    async like(username: string, post_id: string): Promise<string> {
+        return this.mypageRepository.like(username, post_id);
+    }
+
     async getDibs(username: string): Promise<any> {
         return this.mypageRepository.getDibs(username);
     }

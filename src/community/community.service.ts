@@ -27,14 +27,6 @@ export class CommunityService {
         return await this.communityRepository.getDetail(post_id);
     }
 
-    async likePost(post_id): Promise<any> {
-        return await this.communityRepository.likePost(post_id);
-    }
-
-    async hatePost(post_id): Promise<any> {
-        return await this.communityRepository.hatePost(post_id);
-    }
-
     // async get(
     //     asCode: string,
     //     endUser: string,
