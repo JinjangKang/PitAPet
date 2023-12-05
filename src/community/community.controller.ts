@@ -4,6 +4,7 @@ import { CommunityService } from './community.service';
 import { CreateCommunityDto } from './dto/create_community.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Community } from './community.entity';
+import { title } from 'process';
 
 @Controller('community')
 @ApiTags('community API')
@@ -56,5 +57,18 @@ export class CommunityController {
     @ApiQuery({ name: 'post_id', required: true })
     async getDetail(@Query('post_id') post_id: number): Promise<Community> {
         return await this.communityService.getDetail(post_id);
+    }
+
+    @Get('dataByTitle')
+    @ApiOperation({ summary: '커뮤니티 게시글 가져오기, page => 페이지 번호, pageSize => 페이지 당 표시할 데이터 수' })
+    @ApiQuery({ name: 'page', required: false, type: Number })
+    @ApiQuery({ name: 'pageSize', required: false, type: Number })
+    async getDataByTitle(
+        @Query('page') page: number = 1,
+        @Query('pageSize') pageSize: number = 10,
+        @Query('title') title: string,
+    ): Promise<Community[]> {
+        const offset = (page - 1) * pageSize;
+        return await this.communityService.getDataByTitle(pageSize, offset, title);
     }
 }

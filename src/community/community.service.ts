@@ -22,6 +22,9 @@ export class CommunityService {
     async getData(pageSize, offset, hot): Promise<any[]> {
         return await this.communityRepository.getData(pageSize, offset, hot);
     }
+    async getDataByTitle(pageSize, offset, title): Promise<any[]> {
+        return await this.communityRepository.getDataByTitle(pageSize, offset, title);
+    }
 
     async getDetail(post_id): Promise<any> {
         return await this.communityRepository.getDetail(post_id);

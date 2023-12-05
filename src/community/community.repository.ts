@@ -1,6 +1,6 @@
 import { CustomRepository } from 'src/typeorm-ex.decorator';
 
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateCommunityDto } from './dto/create_community.dto';
 import { Community } from './community.entity';
 import { dataSource } from 'src/server';
@@ -49,6 +49,31 @@ export class CommunityRepository extends Repository<Community> {
             take: pageSize,
             skip: offset,
             order: order,
+        });
+
+        for (let p of post) {
+            delete p.content;
+        }
+
+        let postPageCnt = await this.count({
+            take: pageSize,
+            skip: offset,
+        });
+
+        const posts = {
+            data: post,
+            pageCount: Math.ceil(postPageCnt / pageSize),
+        };
+
+        return posts;
+    }
+
+    async getDataByTitle(pageSize, offset, title): Promise<any> {
+        let post: any[] = await this.find({
+            take: pageSize,
+            skip: offset,
+            where: { title: Like(`%${title}%`) },
+            order: { post_id: 'desc' },
         });
 
         for (let p of post) {
