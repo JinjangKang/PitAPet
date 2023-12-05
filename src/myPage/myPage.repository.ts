@@ -70,7 +70,7 @@ export class MypageRepository extends Repository<Mypage> {
         if (likeListString) {
             let likeList = JSON.parse(likeListString);
 
-            if (!(likeList.indexOf(post_id) >= 0)) {
+            if (likeList.indexOf(post_id) == -1) {
                 likeList = [...likeList, post_id];
 
                 message = '좋아요 완료';

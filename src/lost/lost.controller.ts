@@ -54,7 +54,7 @@ export class lostController {
         @Query('name') name: string = '',
     ): Promise<Lost[]> {
         const offset = (page - 1) * pageSize;
-        console.log(type);
+
         return await this.lostService.getData(pageSize, offset, type, region, name);
     }
 

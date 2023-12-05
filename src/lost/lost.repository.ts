@@ -63,6 +63,7 @@ export class lostRepository extends Repository<Lost> {
                 lostPlace: Like(`%${region || ''}%`),
                 petName: Like(`%${name || ''}%`),
             },
+            order: { createdDate: 'desc' },
         });
 
         for (let e of lost) {
