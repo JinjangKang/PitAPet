@@ -84,10 +84,6 @@ export class AuthService {
         return hashedPassword;
     }
 
-    async checkKaKao(username) {
-        await this.userRepository.checkKaKao(username);
-    }
-
     async verifyKakaoToken(token: string): Promise<boolean> {
         try {
             // 카카오 토큰 검증
