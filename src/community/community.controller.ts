@@ -47,7 +47,7 @@ export class CommunityController {
         @Query('page') page: number = 1,
         @Query('pageSize') pageSize: number = 10,
         @Query('hot') hot: number = 0,
-        @Query('title') title: string,
+        @Query('title') title: string = '',
     ): Promise<Community[]> {
         const offset = (page - 1) * pageSize;
         return await this.communityService.getData(pageSize, offset, hot, title);

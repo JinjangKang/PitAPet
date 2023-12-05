@@ -4,6 +4,8 @@ import { Lost } from './lost.entity';
 import { CreatelostDto } from './dto/create_lost.dto';
 import { LostImage } from './_lostImage/lostImage.entity';
 import { dataSource } from 'src/server';
+import { LostReply } from 'src/lostReply/lostReply.entity';
+import { repl } from '@nestjs/core';
 
 @CustomRepository(Lost)
 export class lostRepository extends Repository<Lost> {
@@ -80,8 +82,11 @@ export class lostRepository extends Repository<Lost> {
     async getDetail(lostNo): Promise<any> {
         const main = await this.findOne({ where: { lostNo: lostNo } });
         const images = await dataSource.getRepository(LostImage).findOne({ where: { lostNo: lostNo } });
+        const replies = await dataSource
+            .getRepository(LostReply)
+            .find({ where: { lostNo: lostNo }, order: { reply_id: 'desc' } });
 
-        return { ...main, images };
+        return { ...main, images, replies };
     }
 
     // async get(

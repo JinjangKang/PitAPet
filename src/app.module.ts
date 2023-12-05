@@ -12,6 +12,7 @@ import { CommunityModule } from './community/community.module';
 import { ReplyModule } from './reply/reply.module';
 import { petHospital } from './petHospital/petHospital.entity';
 import { petHospitalModule } from './petHospital/petHospital.module';
+import { LostReplyModule } from './lostReply/lostReply.module';
 
 @Module({
     imports: [
@@ -28,6 +29,7 @@ import { petHospitalModule } from './petHospital/petHospital.module';
         CommunityModule,
         ReplyModule,
         petHospitalModule,
+        LostReplyModule,
     ],
     controllers: [],
     providers: [],
