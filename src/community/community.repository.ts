@@ -1,5 +1,4 @@
 import { CustomRepository } from 'src/typeorm-ex.decorator';
-
 import { Like, Repository } from 'typeorm';
 import { CreateCommunityDto } from './dto/create_community.dto';
 import { Community } from './community.entity';
@@ -38,7 +37,7 @@ export class CommunityRepository extends Repository<Community> {
         await this.softDelete({ post_id: post_id });
     }
 
-    async getData(pageSize, offset, hot): Promise<any> {
+    async getData(pageSize, offset, hot, title): Promise<any> {
         let order;
         if (hot != 1) {
             order = { post_id: 'desc' };
@@ -49,31 +48,7 @@ export class CommunityRepository extends Repository<Community> {
             take: pageSize,
             skip: offset,
             order: order,
-        });
-
-        for (let p of post) {
-            delete p.content;
-        }
-
-        let postPageCnt = await this.count({
-            take: pageSize,
-            skip: offset,
-        });
-
-        const posts = {
-            data: post,
-            pageCount: Math.ceil(postPageCnt / pageSize),
-        };
-
-        return posts;
-    }
-
-    async getDataByTitle(pageSize, offset, title): Promise<any> {
-        let post: any[] = await this.find({
-            take: pageSize,
-            skip: offset,
-            where: { title: Like(`%${title}%`) },
-            order: { post_id: 'desc' },
+            where: { title: Like(`%${title || ''}%`) },
         });
 
         for (let p of post) {

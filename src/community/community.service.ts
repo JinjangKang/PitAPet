@@ -19,11 +19,8 @@ export class CommunityService {
         return await this.communityRepository.deletePost(post_id);
     }
 
-    async getData(pageSize, offset, hot): Promise<any[]> {
-        return await this.communityRepository.getData(pageSize, offset, hot);
-    }
-    async getDataByTitle(pageSize, offset, title): Promise<any[]> {
-        return await this.communityRepository.getDataByTitle(pageSize, offset, title);
+    async getData(pageSize, offset, hot, title): Promise<any[]> {
+        return await this.communityRepository.getData(pageSize, offset, hot, title);
     }
 
     async getDetail(post_id): Promise<any> {
