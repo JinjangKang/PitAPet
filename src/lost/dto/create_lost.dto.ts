@@ -20,7 +20,7 @@ export class CreatelostDto {
     @ApiProperty({ description: 'lostPlace' })
     lostPlace: string;
     @ApiProperty({ description: 'lostDate', example: '2023-09-17' })
-    lostDate: Date;
+    lostDate: string;
     @ApiProperty({ description: 'tel' })
     tel: string;
     @ApiProperty({ description: 'reward' })

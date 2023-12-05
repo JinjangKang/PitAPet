@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Query, UseInterceptors, UploadedFiles, UploadedFile, Bind } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Query,
+    UseInterceptors,
+    UploadedFiles,
+    UploadedFile,
+    Bind,
+    Delete,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { lostService } from './lost.service';
 import { Lost } from './lost.entity';
