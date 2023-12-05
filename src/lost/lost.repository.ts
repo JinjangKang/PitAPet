@@ -1,5 +1,5 @@
 import { CustomRepository } from 'src/typeorm-ex.decorator';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Lost } from './lost.entity';
 import { CreatelostDto } from './dto/create_lost.dto';
 import { LostImage } from './_lostImage/lostImage.entity';
@@ -54,10 +54,15 @@ export class lostRepository extends Repository<Lost> {
         return await this.find();
     }
 
-    async getData(pageSize, offset): Promise<any> {
+    async getData(pageSize, offset, type, region, name): Promise<any> {
         let lost: any[] = await this.find({
             take: pageSize,
             skip: offset,
+            where: {
+                type: Like(`%${type || ''}%`),
+                lostPlace: Like(`%${region || ''}%`),
+                petName: Like(`%${name || ''}%`),
+            },
         });
 
         for (let e of lost) {

@@ -43,9 +43,19 @@ export class lostController {
     @ApiOperation({ summary: '아이들 데이터 가져오기, page => 페이지 번호, pageSize => 페이지 당 표시할 데이터 수' })
     @ApiQuery({ name: 'page', required: false, type: Number })
     @ApiQuery({ name: 'pageSize', required: false, type: Number })
-    async getData(@Query('page') page: number = 1, @Query('pageSize') pageSize: number = 10): Promise<Lost[]> {
+    @ApiQuery({ name: 'type', required: false, type: String })
+    @ApiQuery({ name: 'region', required: false, type: String })
+    @ApiQuery({ name: 'name', required: false, type: String })
+    async getData(
+        @Query('page') page: number = 1,
+        @Query('pageSize') pageSize: number = 10,
+        @Query('type') type: string = '',
+        @Query('region') region: string = '',
+        @Query('name') name: string = '',
+    ): Promise<Lost[]> {
         const offset = (page - 1) * pageSize;
-        return await this.lostService.getData(pageSize, offset);
+        console.log(type);
+        return await this.lostService.getData(pageSize, offset, type, region, name);
     }
 
     @Get('detail')

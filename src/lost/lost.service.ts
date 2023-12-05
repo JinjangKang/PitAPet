@@ -15,8 +15,8 @@ export class lostService {
         return await this.lostRepository.getall();
     }
 
-    async getData(pageSize, offset): Promise<any[]> {
-        return await this.lostRepository.getData(pageSize, offset);
+    async getData(pageSize, offset, type, region, name): Promise<any[]> {
+        return await this.lostRepository.getData(pageSize, offset, type, region, name);
     }
 
     async getDetail(lostNo): Promise<any> {
