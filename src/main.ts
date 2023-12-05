@@ -13,7 +13,7 @@ async function bootstrap() {
     dotenv.config();
 
     const corsOptions: CorsOptions = {
-        origin: 'http://localhost:3000', // 프론트엔드 도메인
+        origin: '*', // 프론트엔드 도메인
         credentials: true, // 인증 정보 (쿠키 등)를 허용하려면 true로 설정
     };
     app.enableCors(corsOptions);

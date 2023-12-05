@@ -2,6 +2,7 @@ import { Body, Controller, Get, Patch, Post, Query, Req, UseGuards } from '@nest
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { MypageService } from './myPage.service';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { KakaoAuthGuard } from 'src/auth/kakao-auth.guard';
 
 @Controller('Mypage')
 @ApiTags('Mypage API')

@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcrypt';
 import { MypageRepository } from 'src/myPage/myPage.repository';
+import axios from 'axios';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,8 @@ export class AuthService {
         private userRepository: UserRepository,
         private myPageRepository: MypageRepository,
     ) {}
+    private readonly kakaoTokenVerifyUrl = 'https://kapi.kakao.com/v1/user/access_token_info';
+    private readonly kakaoUserInfoUrl = 'https://kapi.kakao.com/v2/user/me';
 
     // 유저 확인
     async validateUser(username: string, password: string): Promise<any> {
@@ -83,5 +86,44 @@ export class AuthService {
 
     async checkKaKao(username) {
         await this.userRepository.checkKaKao(username);
+    }
+
+    async verifyKakaoToken(token: string): Promise<boolean> {
+        try {
+            // 카카오 토큰 검증
+            const response = await axios.get(this.kakaoTokenVerifyUrl, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.data.code !== 0) {
+                console.error('Kakao token verification failed:', response.data);
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.error('Kakao token verification failed:', error);
+            return false;
+        }
+    }
+
+    async getUserInfoFromKakao(token: string): Promise<string | null> {
+        try {
+            // 카카오 API를 사용하여 사용자 정보 조회
+            const response = await axios.get(this.kakaoUserInfoUrl, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // 여기에서 response.data에는 사용자 정보가 들어 있음
+            const userName = response.data.properties.nickname;
+            return userName;
+        } catch (error) {
+            console.error('Failed to get user info from Kakao:', error);
+            return null;
+        }
     }
 }

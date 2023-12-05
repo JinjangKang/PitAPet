@@ -18,6 +18,7 @@ export class AuthController {
     @UseGuards(AuthGuard('kakao'))
     async kakaoLoginCallback(@Req() req) {
         // 사용자가 로그인하면 여기로 리디렉션됩니다.
+
         return req.user;
     }
 

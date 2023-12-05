@@ -20,8 +20,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
         let kakaoId = profile.id;
         let username = profile.username;
 
-        await this.authService.checkKaKao(username);
-        return { accessToken, kakaoId };
+        return { username, kakaoId };
     }
 
     // async authorize(clientID: string, clientSecret: string, code: string): Promise<any> {
