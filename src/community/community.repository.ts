@@ -38,11 +38,17 @@ export class CommunityRepository extends Repository<Community> {
         await this.softDelete({ post_id: post_id });
     }
 
-    async getData(pageSize, offset): Promise<any> {
+    async getData(pageSize, offset, hot): Promise<any> {
+        let order;
+        if (hot != 1) {
+            order = { post_id: 'desc' };
+        } else {
+            order = { like: 'desc' };
+        }
         let post: any[] = await this.find({
             take: pageSize,
             skip: offset,
-            order: { post_id: 'desc' },
+            order: order,
         });
 
         for (let p of post) {

@@ -41,9 +41,14 @@ export class CommunityController {
     @ApiOperation({ summary: '커뮤니티 게시글 가져오기, page => 페이지 번호, pageSize => 페이지 당 표시할 데이터 수' })
     @ApiQuery({ name: 'page', required: false, type: Number })
     @ApiQuery({ name: 'pageSize', required: false, type: Number })
-    async getData(@Query('page') page: number = 1, @Query('pageSize') pageSize: number = 10): Promise<Community[]> {
+    @ApiQuery({ name: 'hot', required: false, type: Number, description: '1 넣으면 인기순 정렬, 안넣으면 최신순' })
+    async getData(
+        @Query('page') page: number = 1,
+        @Query('pageSize') pageSize: number = 10,
+        @Query('hot') hot: number = 0,
+    ): Promise<Community[]> {
         const offset = (page - 1) * pageSize;
-        return await this.communityService.getData(pageSize, offset);
+        return await this.communityService.getData(pageSize, offset, hot);
     }
 
     @Get('detail')
