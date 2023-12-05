@@ -18,6 +18,7 @@ export class MypageRepository extends Repository<Mypage> {
         return {
             user: user,
             dibList: await this.getDibs(user.username),
+            likeList: JSON.parse((await this.findOne({ where: { username: user.username } })).likeList || '[]'),
             myPosting: await dataSource
                 .getRepository(Community)
                 .find({ where: { username: user.username }, order: { post_id: 'desc' } }),
@@ -89,13 +90,18 @@ export class MypageRepository extends Repository<Mypage> {
 
     //찜리스트 가져오기
     async getDibs(username: string): Promise<any> {
-        const dibList = JSON.parse((await this.findOne({ where: { username: username } })).dibList);
-
         let list = [];
+        try {
+            const dibList = JSON.parse((await this.findOne({ where: { username: username } })).dibList);
 
-        for (let desertionNo of dibList) {
-            let dib = await dataSource.getRepository(Idle).findOne({ where: { desertionNo: desertionNo } });
-            list.push(dib);
+            list = [];
+
+            for (let desertionNo of dibList) {
+                let dib = await dataSource.getRepository(Idle).findOne({ where: { desertionNo: desertionNo } });
+                list.push(dib);
+            }
+        } catch (e) {
+            list = [];
         }
 
         return list;
