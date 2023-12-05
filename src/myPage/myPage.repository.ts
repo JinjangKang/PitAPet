@@ -125,8 +125,7 @@ export class MypageRepository extends Repository<Mypage> {
 
             for (let lostNo of lostList) {
                 let dib = await dataSource.getRepository(Lost).findOne({ where: { lostNo: lostNo } });
-                let image1 = (await dataSource.getRepository(LostImage).findOne({ where: { lostNo: lostNo } })).image1;
-                let images = { image1: image1 };
+                let images = await dataSource.getRepository(LostImage).findOne({ where: { lostNo: lostNo } });
 
                 list.push({ ...dib, images });
             }
